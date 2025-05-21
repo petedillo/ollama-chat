@@ -5,7 +5,7 @@ export const sendChatMessage = async (messages) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'llama2',
+      model: 'llama3',
       messages,
       stream: true
     })
