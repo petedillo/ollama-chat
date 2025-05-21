@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
+import ReactMarkdown from 'react-markdown'
+import rehypeSanitize from 'rehype-sanitize'
 import { sendChatMessage } from '../../services/ollamaService'
 import './ChatContainer.css'
 
@@ -53,14 +55,53 @@ export const ChatContainer = () => {
     }
   }
 
+  const renderMessage = (msg, index) => {
+    if (msg.role === 'user') {
+      return (
+        <div key={index} className={`message ${msg.role}`}>
+          {msg.content}
+        </div>
+      )
+    }
+
+    return (
+      <div key={index} className={`message ${msg.role}`}>
+        <div className="markdown">
+          <ReactMarkdown 
+            rehypePlugins={[rehypeSanitize]}
+            components={{
+              code({node, inline, className, children, ...props}) {
+                return (
+                  <code className={`${inline ? 'inline' : 'block'}`} {...props}>
+                    {children}
+                  </code>
+                )
+              },
+              // Add wrapper div for other elements to style them
+              p: ({children}) => <p className="markdown-p">{children}</p>,
+              h1: ({children}) => <h1 className="markdown-h1">{children}</h1>,
+              h2: ({children}) => <h2 className="markdown-h2">{children}</h2>,
+              h3: ({children}) => <h3 className="markdown-h3">{children}</h3>,
+              a: ({children, href}) => <a className="markdown-link" href={href}>{children}</a>,
+              ul: ({children}) => <ul className="markdown-ul">{children}</ul>,
+              ol: ({children}) => <ol className="markdown-ol">{children}</ol>,
+              blockquote: ({children}) => <blockquote className="markdown-blockquote">{children}</blockquote>,
+              table: ({children}) => <table className="markdown-table">{children}</table>,
+              th: ({children}) => <th className="markdown-th">{children}</th>,
+              td: ({children}) => <td className="markdown-td">{children}</td>
+            }}
+          >
+            {msg.content}
+          </ReactMarkdown>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="chat-container">
       <div className="messages" ref={chatContainerRef}>
-        {messages.map((msg, index) => (
-          <div key={index} className={`message ${msg.role}`}>
-            {msg.content}
-          </div>
-        ))}
+        {messages.map((msg, index) => renderMessage(msg, index))}
         {isLoading && (
           <div className="message assistant loading">
             Assistant is typing...
