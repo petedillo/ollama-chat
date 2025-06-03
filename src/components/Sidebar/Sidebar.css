@@ -4,41 +4,74 @@
   border-right: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .sidebar-header {
   padding: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
 }
 
-.new-chat {
+.new-chat-button {
   width: 100%;
   padding: var(--spacing-sm);
   background-color: var(--color-accent-primary);
   color: var(--color-text-primary);
   border: none;
   border-radius: var(--radius-sm);
+  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
-.new-chat:hover {
+.new-chat-button:hover {
   background-color: var(--color-accent-secondary);
 }
 
-.chat-history {
+.chat-list {
   flex: 1;
   overflow-y: auto;
-  padding: var(--spacing-md);
+  padding: var(--spacing-sm);
 }
 
-.history-item {
+.chat-item {
   padding: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);
   border-radius: var(--radius-sm);
   cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.chat-item:hover {
+  background-color: var(--color-bg-tertiary);
+}
+
+.chat-item.active {
+  background-color: var(--color-accent-primary);
+}
+
+.chat-title {
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--color-text-primary);
+}
+
+.chat-date {
+  font-size: 0.8rem;
   color: var(--color-text-secondary);
 }
 
-.history-item:hover {
-  background-color: var(--color-bg-tertiary);
+.loading-indicator {
+  padding: var(--spacing-md);
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.empty-state {
+  padding: var(--spacing-xl) var(--spacing-md);
+  text-align: center;
+  color: var(--color-text-secondary);
 }

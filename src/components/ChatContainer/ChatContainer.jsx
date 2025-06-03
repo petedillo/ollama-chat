@@ -1,87 +1,48 @@
-import { useState, useEffect, useRef } from 'react'
-import ReactMarkdown from 'react-markdown'
-import rehypeSanitize from 'rehype-sanitize'
-import rehypePrism from '@mapbox/rehype-prism'
-import remarkGfm from 'remark-gfm'
-import 'prismjs/themes/prism-tomorrow.css'
-import { sendChatMessage } from '../../services/ollamaService'
-import './ChatContainer.css'
+import { useState, useEffect, useRef } from 'react';
+import { useChatContext } from '../../context/ChatContext';
+import ReactMarkdown from 'react-markdown';
+import rehypeSanitize from 'rehype-sanitize';
+import rehypePrism from '@mapbox/rehype-prism';
+import remarkGfm from 'remark-gfm';
+import 'prismjs/themes/prism-tomorrow.css';
+import './ChatContainer.css';
 
 export const ChatContainer = () => {
-  const [messages, setMessages] = useState([])
-  const [input, setInput] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const chatContainerRef = useRef(null)
-  const inputRef = useRef(null) // Add ref for input focus
+  const { currentChat, loading, error, clearError, sendMessage } = useChatContext();
+  const [messageInput, setMessageInput] = useState('');
+  const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
 
-  // Auto-scroll to bottom when messages update
+  // Scroll to bottom when messages change
   useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages])
+  }, [currentChat?.messages]);
 
-  // Focus input after message is sent
+  // Focus input after loading state changes
   useEffect(() => {
-    if (!isLoading && inputRef.current) {
-      inputRef.current.focus()
+    if (!loading && inputRef.current) {
+      inputRef.current.focus();
     }
-  }, [isLoading])
+  }, [loading]);
 
-  // Handle streaming response from Ollama
-  const handleStreamResponse = async (reader, decoder, assistantMessage) => {
-    try {
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-
-        const chunk = decoder.decode(value)
-        const lines = chunk.split('\n').filter(Boolean)
-        
-        for (const line of lines) {
-          const data = JSON.parse(line)
-          if (data.done) break
-          
-          const messageContent = data.message?.content || data.content || ''
-          assistantMessage.content += messageContent
-          setMessages(prev => [...prev.slice(0, -1), { ...assistantMessage }])
-        }
-      }
-    } catch (error) {
-      console.error('Error processing stream:', error)
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    
+    if (!messageInput.trim()) return;
+    
+    const result = await sendMessage(messageInput);
+    if (result) {
+      setMessageInput('');
     }
-  }
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!input.trim()) return
-
-    const userMessage = { role: 'user', content: input }
-    setMessages(prev => [...prev, userMessage])
-    setInput('')
-    setIsLoading(true)
-
-    try {
-      const response = await sendChatMessage([...messages, userMessage])
-      const reader = response.body.getReader()
-      const decoder = new TextDecoder()
-      let assistantMessage = { role: 'assistant', content: '' }
-      setMessages(prev => [...prev, assistantMessage])
-
-      await handleStreamResponse(reader, decoder, assistantMessage)
-    } catch (error) {
-      console.error('Error sending message:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  };
 
   // Markdown components configuration
   const markdownComponents = {
     code({node, inline, className, children, ...props}) {
-      const match = /language-(\w+)/.exec(className || '')
-      const language = match ? match[1] : ''
+      const match = /language-(\w+)/.exec(className || '');
+      const language = match ? match[1] : '';
       
       return !inline ? (
         <div className="code-block-wrapper">
@@ -98,7 +59,7 @@ export const ChatContainer = () => {
         <code className="inline-code" {...props}>
           {children}
         </code>
-      )
+      );
     },
     p: ({children}) => <p className="markdown-p">{children}</p>,
     h1: ({children}) => <h1 className="markdown-h1">{children}</h1>,
@@ -111,55 +72,87 @@ export const ChatContainer = () => {
     table: ({children}) => <table className="markdown-table">{children}</table>,
     th: ({children}) => <th className="markdown-th">{children}</th>,
     td: ({children}) => <td className="markdown-td">{children}</td>
-  }
+  };
 
-  // Message renderer
-  const renderMessage = (msg, index) => {
+  const renderMessage = (message) => {
     return (
-      <div key={index} className={`message ${msg.role}`}>
-        {msg.role === 'user' ? (
-          msg.content
-        ) : (
-          <div className="markdown">
-            <ReactMarkdown 
-              rehypePlugins={[rehypeSanitize, rehypePrism]}
-              remarkPlugins={[remarkGfm]}
-              components={markdownComponents}
-            >
-              {msg.content}
-            </ReactMarkdown>
-          </div>
-        )}
+      <div 
+        key={message.id} 
+        className={`message ${message.role === 'user' ? 'user-message' : 'assistant-message'}`}
+      >
+        <div className="message-role">{message.role === 'user' ? 'You' : 'Assistant'}</div>
+        <div className="message-content">
+          <ReactMarkdown
+            rehypePlugins={[rehypeSanitize, rehypePrism]}
+            remarkPlugins={[remarkGfm]}
+            components={markdownComponents}
+          >
+            {message.content}
+          </ReactMarkdown>
+        </div>
       </div>
-    )
-  }
+    );
+  };
 
-  // Loading indicator component
-  const LoadingIndicator = () => (
-    <div className="message assistant loading">
-      Assistant is typing...
-    </div>
-  )
+  // Display error message
+  const renderError = () => {
+    if (!error) return null;
+    
+    return (
+      <div className="error-message">
+        <p>Error: {error}</p>
+        <button onClick={clearError} className="dismiss-error">Dismiss</button>
+      </div>
+    );
+  };
 
   return (
     <div className="chat-container">
-      <div className="messages" ref={chatContainerRef}>
-        {messages.map((msg, index) => renderMessage(msg, index))}
-        {isLoading && <LoadingIndicator />}
+      {renderError()}
+      
+      <div className="messages-container">
+        {!currentChat ? (
+          <div className="empty-chat">
+            <h2>No chat selected</h2>
+            <p>Select a chat from the sidebar or create a new one</p>
+          </div>
+        ) : currentChat.messages.length === 0 ? (
+          <div className="empty-chat">
+            <h2>Start a new conversation</h2>
+            <p>Type a message below to begin chatting</p>
+          </div>
+        ) : (
+          <>
+            {currentChat.messages.map(renderMessage)}
+            <div ref={messagesEndRef} />
+          </>
+        )}
+        
+        {loading && (
+          <div className="loading-indicator">
+            Assistant is thinking...
+          </div>
+        )}
       </div>
-      <form onSubmit={handleSubmit} className="input-form">
+      
+      <form className="input-container" onSubmit={handleSendMessage}>
         <input
           ref={inputRef}
           type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your message..."
-          disabled={isLoading}
+          value={messageInput}
+          onChange={(e) => setMessageInput(e.target.value)}
+          placeholder="Type a message..."
+          disabled={loading || !currentChat}
+          className="message-input"
         />
-        <button type="submit" disabled={isLoading}>
-          Send
+        <button 
+          type="submit" 
+          disabled={loading || !messageInput.trim() || !currentChat}
+          className="send-button"
+        >
+          {loading ? 'Sending...' : 'Send'}
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
