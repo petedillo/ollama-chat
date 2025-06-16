@@ -3,7 +3,9 @@ import {
   fetchAllChatSessions, 
   fetchChatById, 
   createChat, 
-  sendChatMessage 
+  sendChatMessage,
+  updateChat,
+  deleteChat
 } from '../services/chatService';
 
 // Create the chat context
@@ -64,12 +66,15 @@ export const ChatProvider = ({ children }) => {
   };
 
   // Create a new chat session
-  const createNewChat = async (title = 'New Chat') => {
+  const createNewChat = async () => {
     try {
       setLoading(true);
       clearError();
       
+      // Create a new chat with a default title
+      const title = 'New Chat';
       const newChat = await createChat(title);
+      
       setChatSessions([newChat, ...chatSessions]);
       setCurrentChatId(newChat.id);
       setCurrentChat({ ...newChat, messages: [] });
@@ -83,33 +88,116 @@ export const ChatProvider = ({ children }) => {
       setLoading(false);
     }
   };
+  
+  // Update a chat's title
+  const updateChatTitle = async (chatId, newTitle) => {
+    if (!chatId || !newTitle?.trim()) return null;
+    
+    try {
+      const updatedChat = await updateChat(chatId, { title: newTitle });
+      
+      // Update in chatSessions
+      setChatSessions(prev => 
+        prev.map(chat => 
+          chat.id === chatId ? { ...chat, title: newTitle, updatedAt: updatedChat.updatedAt } : chat
+        )
+      );
+      
+      // Update current chat if it's the one being edited
+      if (currentChatId === chatId) {
+        setCurrentChat(prev => ({
+          ...prev,
+          title: newTitle,
+          updatedAt: updatedChat.updatedAt
+        }));
+      }
+      
+      return updatedChat;
+    } catch (err) {
+      setError(err.message);
+      console.error('Error updating chat title:', err);
+      throw err;
+    }
+  };
+  
+  // Delete a chat session
+  const removeChat = async (chatId) => {
+    if (!chatId) return false;
+    
+    try {
+      await deleteChat(chatId);
+      
+      // Remove from chatSessions
+      setChatSessions(prev => prev.filter(chat => chat.id !== chatId));
+      
+      // If the deleted chat is the current one, switch to another chat or create a new one
+      if (currentChatId === chatId) {
+        const remainingChats = chatSessions.filter(chat => chat.id !== chatId);
+        if (remainingChats.length > 0) {
+          setCurrentChatId(remainingChats[0].id);
+        } else {
+          // No chats left, create a new one
+          const newChat = await createNewChat();
+          if (newChat) {
+            setCurrentChatId(newChat.id);
+          } else {
+            setCurrentChatId(null);
+            setCurrentChat(null);
+          }
+        }
+      }
+      
+      return true;
+    } catch (err) {
+      setError(err.message);
+      console.error('Error deleting chat:', err);
+      return false;
+    }
+  };
 
   // Send a message in the current chat
   const sendMessage = async (content) => {
-    if (!currentChatId) {
-      // Create a new chat if none exists
+    let chatId = currentChatId;
+    let isNewChat = false;
+    
+    // Create a new chat if none exists
+    if (!chatId) {
       const newChat = await createNewChat();
       if (!newChat) return null;
+      chatId = newChat.id;
+      isNewChat = true;
     }
     
     try {
       setLoading(true);
       clearError();
       
-      const { userMessage, assistantMessage } = await sendChatMessage(currentChatId, content);
+      // For new chats, we need to wait a bit to ensure the chat is created
+      if (isNewChat) {
+        await new Promise(resolve => setTimeout(resolve, 300));
+      }
+      
+      const { userMessage, assistantMessage } = await sendChatMessage(chatId, content);
       
       // Update current chat with new messages
       setCurrentChat(prev => ({
         ...prev,
-        messages: [...prev.messages, userMessage, assistantMessage],
+        messages: [...(prev?.messages || []), userMessage, assistantMessage],
         updatedAt: assistantMessage.createdAt
       }));
       
       // Update the chat in the sessions list
       setChatSessions(prev => 
         prev.map(chat => 
-          chat.id === currentChatId 
-            ? { ...chat, updatedAt: assistantMessage.createdAt } 
+          chat.id === chatId 
+            ? { 
+                ...chat, 
+                updatedAt: assistantMessage.createdAt,
+                // Update title if it's still the default title and this is the first message
+                title: chat.title === 'New Chat' && isNewChat 
+                  ? userMessage.content.slice(0, 30) + (userMessage.content.length > 30 ? '...' : '')
+                  : chat.title
+              } 
             : chat
         )
       );
@@ -152,6 +240,8 @@ export const ChatProvider = ({ children }) => {
     clearError,
     fetchChatSessions,
     createNewChat,
+    updateChatTitle,
+    removeChat,
     sendMessage,
     switchChat,
   };

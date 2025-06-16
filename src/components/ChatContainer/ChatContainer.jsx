@@ -49,25 +49,65 @@ const ErrorMessage = ({ error, onDismiss }) => (
 // Custom hook for message handling
 const useMessageHandler = (sendMessage) => {
   const [messageInput, setMessageInput] = useState('');
+  const textareaRef = useRef(null);
 
-  const handleSendMessage = async (e) => {
-    e.preventDefault();
-    if (!messageInput.trim()) return;
-
-    const result = await sendMessage(messageInput);
-    if (result) {
-      setMessageInput('');
+  // Auto-resize textarea based on content
+  const adjustTextareaHeight = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`; // Max height 200px
     }
   };
 
-  return { messageInput, setMessageInput, handleSendMessage };
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [messageInput]);
+
+  const handleKeyDown = (e) => {
+    // Submit on Enter (without Shift)
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage(e);
+    }
+    // Allow Shift+Enter for new line
+  };
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    const trimmedMessage = messageInput.trim();
+    if (!trimmedMessage) return;
+
+    const result = await sendMessage(trimmedMessage);
+    if (result) {
+      setMessageInput('');
+      // Reset textarea height after sending
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+      }
+    }
+  };
+
+  return { 
+    messageInput, 
+    setMessageInput, 
+    handleSendMessage, 
+    handleKeyDown,
+    textareaRef
+  };
 };
 
 export const ChatContainer = () => {
   const { currentChat, loading, error, clearError, sendMessage } = useChatContext();
-  const { messageInput, setMessageInput, handleSendMessage } = useMessageHandler(sendMessage);
+  const { 
+    messageInput, 
+    setMessageInput, 
+    handleSendMessage, 
+    handleKeyDown,
+    textareaRef 
+  } = useMessageHandler(sendMessage);
   const messagesEndRef = useRef(null);
-  const inputRef = useRef(null);
+  const formRef = useRef(null);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -75,11 +115,38 @@ export const ChatContainer = () => {
     }
   }, [currentChat?.messages]);
 
+  // Focus the textarea when chat changes or loading state changes
   useEffect(() => {
-    if (!loading && inputRef.current) {
-      inputRef.current.focus();
+    if (!loading && textareaRef.current) {
+      textareaRef.current.focus();
     }
-  }, [loading]);
+  }, [loading, currentChat?.id]);
+  
+  // Handle keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Focus the textarea when pressing / (but not when in an input or textarea)
+      if (e.key === '/' && 
+          document.activeElement?.tagName !== 'INPUT' && 
+          document.activeElement?.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        if (textareaRef.current) {
+          textareaRef.current.focus();
+        }
+      }
+      // Submit form with Cmd+Enter or Ctrl+Enter
+      else if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        if (formRef.current && messageInput.trim()) {
+          handleSendMessage(e);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [messageInput]);
 
   const renderChatContent = () => {
     if (!currentChat) {
@@ -102,32 +169,56 @@ export const ChatContainer = () => {
 
         <div className="messages-container">
           {renderChatContent()}
-          {loading && <div className="loading-indicator">Assistant is thinking...</div>}
+          {loading && <div className="loading-indicator">
+            <div className="typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>}
+          <div ref={messagesEndRef} />
         </div>
 
-        <form className="input-container" onSubmit={handleSendMessage} autoComplete="off">
-          <input
-              ref={inputRef}
-              type="search"
+        <form 
+          ref={formRef}
+          className="input-container" 
+          onSubmit={handleSendMessage} 
+          autoComplete="off"
+        >
+          <div className="input-wrapper">
+            <textarea
+              ref={textareaRef}
               value={messageInput}
               onChange={(e) => setMessageInput(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="Type a message..."
               disabled={loading || !currentChat}
               className="message-input"
+              rows="1"
               autoComplete="off"
-              spellCheck="false"
-              autoCorrect="off"
-              autoCapitalize="off"
-              role="textbox"
+              spellCheck="true"
               aria-label="Message input"
-          />
-          <button
+            />
+            <button
               type="submit"
               disabled={loading || !messageInput.trim() || !currentChat}
               className="send-button"
-          >
-            {loading ? 'Sending...' : 'Send'}
-          </button>
+              aria-label="Send message"
+            >
+              {loading ? (
+                <div className="spinner"></div>
+              ) : (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              )}
+            </button>
+          </div>
+          <div className="input-hints">
+            <span className="hint">Shift + Enter for new line</span>
+            <span className="hint">Ctrl + Enter to send</span>
+          </div>
         </form>
       </div>
   );

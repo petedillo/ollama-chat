@@ -1,5 +1,5 @@
 // Base API URL - can be configured in env vars if needed
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 /**
  * Fetch all chat sessions
@@ -72,4 +72,45 @@ export const sendChatMessage = async (chatId, content, role = 'user') => {
   }
   
   return response.json();
+};
+
+/**
+ * Update a chat session
+ * @param {string} chatId - UUID of the chat session
+ * @param {Object} updates - Object containing fields to update
+ * @returns {Promise<Object>} Updated chat session object
+ */
+export const updateChat = async (chatId, updates) => {
+  const response = await fetch(`${API_BASE_URL}/chat/${chatId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updates),
+  });
+  
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `Failed to update chat (${response.status})`);
+  }
+  
+  return response.json();
+};
+
+/**
+ * Delete a chat session
+ * @param {string} chatId - UUID of the chat session to delete
+ * @returns {Promise<boolean>} True if deletion was successful
+ */
+export const deleteChat = async (chatId) => {
+  const response = await fetch(`${API_BASE_URL}/chat/${chatId}`, {
+    method: 'DELETE',
+  });
+  
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `Failed to delete chat (${response.status})`);
+  }
+  
+  return true;
 };
