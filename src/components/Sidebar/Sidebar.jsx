@@ -1,6 +1,5 @@
 import './Sidebar.css'
 import { useChatContext } from '../../context/ChatContext';
-import './Sidebar.css';
 
 export const Sidebar = () => {
   const { 
