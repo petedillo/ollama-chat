@@ -49,11 +49,11 @@ const ErrorMessage = ({ error, onDismiss }) => (
 // Custom hook for message handling
 const useMessageHandler = (sendMessage) => {
   const [messageInput, setMessageInput] = useState('');
-  
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!messageInput.trim()) return;
-    
+
     const result = await sendMessage(messageInput);
     if (result) {
       setMessageInput('');
@@ -89,43 +89,50 @@ export const ChatContainer = () => {
       return <EmptyState message="Type a message below to begin chatting" />;
     }
     return (
-      <>
-        {currentChat.messages.map(message => <Message key={message.id} message={message} />)}
-        <div ref={messagesEndRef} />
-      </>
+        <>
+          {currentChat.messages.map(message => <Message key={message.id} message={message} />)}
+          <div ref={messagesEndRef} />
+        </>
     );
   };
 
   return (
-    <div className="chat-container">
-      {error && <ErrorMessage error={error} onDismiss={clearError} />}
-      
-      <div className="messages-container">
-        {renderChatContent()}
-        {loading && <div className="loading-indicator">Assistant is thinking...</div>}
+      <div className="chat-container">
+        {error && <ErrorMessage error={error} onDismiss={clearError} />}
+
+        <div className="messages-container">
+          {renderChatContent()}
+          {loading && <div className="loading-indicator">Assistant is thinking...</div>}
+        </div>
+
+        <form className="input-container" onSubmit={handleSendMessage} autoComplete="off">
+          <input
+              ref={inputRef}
+              type="search"
+              value={messageInput}
+              onChange={(e) => setMessageInput(e.target.value)}
+              placeholder="Type a message..."
+              disabled={loading || !currentChat}
+              className="message-input"
+              autoComplete="off"
+              spellCheck="false"
+              autoCorrect="off"
+              autoCapitalize="off"
+              role="textbox"
+              aria-label="Message input"
+          />
+          <button
+              type="submit"
+              disabled={loading || !messageInput.trim() || !currentChat}
+              className="send-button"
+          >
+            {loading ? 'Sending...' : 'Send'}
+          </button>
+        </form>
       </div>
-      
-      <form className="input-container" onSubmit={handleSendMessage}>
-        <input
-          ref={inputRef}
-          type="text"
-          value={messageInput}
-          onChange={(e) => setMessageInput(e.target.value)}
-          placeholder="Type a message..."
-          disabled={loading || !currentChat}
-          className="message-input"
-        />
-        <button 
-          type="submit" 
-          disabled={loading || !messageInput.trim() || !currentChat}
-          className="send-button"
-        >
-          {loading ? 'Sending...' : 'Send'}
-        </button>
-      </form>
-    </div>
   );
 };
+
 
 const EmptyState = ({ message }) => (
   <div className="empty-chat">
