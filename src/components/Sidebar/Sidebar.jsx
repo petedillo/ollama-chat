@@ -17,7 +17,9 @@ export const Sidebar = () => {
   const [editingChatId, setEditingChatId] = useState(null);
   const [editTitle, setEditTitle] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
+  const [deletePosition, setDeletePosition] = useState('bottom');
   const editInputRef = useRef(null);
+  const deleteButtonRefs = useRef({});
 
   const handleCreateNewChat = () => {
     createNewChat();
@@ -67,6 +69,19 @@ export const Sidebar = () => {
   
   const handleDeleteClick = (chatId, e) => {
     e.stopPropagation();
+    
+    // Calculate available space below the button
+    const button = deleteButtonRefs.current[chatId];
+    if (button) {
+      const buttonRect = button.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - buttonRect.bottom;
+      const spaceAbove = buttonRect.top;
+      
+      // If there's not enough space below but more space above, position above
+      const position = spaceBelow < 100 && spaceAbove > 100 ? 'top' : 'bottom';
+      setDeletePosition(position);
+    }
+    
     setShowDeleteConfirm(showDeleteConfirm === chatId ? null : chatId);
   };
   
@@ -186,7 +201,10 @@ export const Sidebar = () => {
                         <FiTrash2 size={14} />
                       </button>
                       {showDeleteConfirm === chat.id && (
-                        <div className="delete-confirm">
+                        <div 
+                          className={`delete-confirm ${deletePosition === 'top' ? 'position-top' : ''}`}
+                          ref={el => deleteButtonRefs.current[chat.id] = el}
+                        >
                           <span>Delete?</span>
                           <button 
                             className="confirm-delete"
