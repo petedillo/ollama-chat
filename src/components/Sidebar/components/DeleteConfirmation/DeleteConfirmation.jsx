@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import './DeleteConfirmation.css';
-
+import { FaTrash, FaCheck, FaTimes } from 'react-icons/fa';
 export const DeleteConfirmation = ({ onConfirm, onCancel }) => {
   const containerRef = useRef(null);
 
@@ -48,23 +48,27 @@ export const DeleteConfirmation = ({ onConfirm, onCancel }) => {
       className="delete-confirm-container"
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="delete-confirm-buttons">
-        <button 
-          className="confirm-delete"
-          onClick={handleConfirm}
-          type="button"
-          aria-label="Confirm delete"
-        >
-          Delete
-        </button>
-        <button 
-          className="cancel-delete"
-          onClick={handleCancel}
-          type="button"
-          aria-label="Cancel delete"
-        >
-          Cancel
-        </button>
+      <div className="delete-confirm-content">
+        <FaTrash className="delete-icon" />
+        <span className="delete-confirm-text">Delete?</span>
+        <div className="delete-confirm-actions">
+          <button 
+            type="button"
+            className="cancel-button"
+            onClick={handleCancel}
+            aria-label="Cancel deletion"
+          >
+            <FaTimes size={14} />
+          </button>
+          <button 
+            type="button"
+            className="confirm-button"
+            onClick={handleConfirm}
+            aria-label="Confirm deletion"
+          >
+            <FaCheck size={14} />
+          </button>
+        </div>
       </div>
     </div>
   );

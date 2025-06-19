@@ -102,12 +102,14 @@
 
 .chat-actions {
   display: flex;
-  gap: 0.25rem;
+  gap: 4px;
   opacity: 0;
   transition: opacity 0.2s ease;
   margin-left: auto;
-  padding: 2px 4px;
+  padding: 0;
   flex-shrink: 0;
+  width: 60px; /* Match edit form button area */
+  justify-content: flex-end;
 }
 
 .chat-item:hover .chat-actions,
@@ -132,28 +134,53 @@
   background: none;
   border: none;
   cursor: pointer;
-  width: 20px;
-  height: 20px;
-  min-width: 20px;
-  min-height: 20px;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   padding: 0;
   margin: 0;
   border-radius: 4px;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
+  color: var(--color-text-secondary);
 }
 
 .edit-button {
+  color: var(--color-text-secondary);
+  background: none !important;
+  transition: all 0.15s ease;
+}
+
+.edit-button:hover {
   color: var(--color-action-edit);
+  transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.1) !important;
+}
+
+.edit-button:active {
+  transform: scale(0.95);
 }
 
 .delete-button {
+  color: var(--color-text-secondary);
+  background: none !important;
+  transition: all 0.15s ease;
+}
+
+.delete-button:hover {
   color: var(--color-action-delete);
+  transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.1) !important;
+}
+
+.delete-button:active {
+  transform: scale(0.95);
 }
 
 .edit-button::before,
@@ -175,22 +202,6 @@
   opacity: 0.2;
 }
 
-.edit-button:hover {
-  color: var(--color-action-edit);
-  transform: scale(1.15);
-  background: none;
-}
-
-.delete-button:hover {
-  color: var(--color-action-delete);
-  transform: scale(1.15);
-  background: none;
-}
-
-.edit-button:active,
-.delete-button:active {
-  transform: scale(0.95);
-}
 
 /* Make sure icons are always visible */
 .edit-button svg,
