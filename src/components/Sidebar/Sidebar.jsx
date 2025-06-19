@@ -15,11 +15,10 @@ export const Sidebar = () => {
   } = useChatContext();
   
   const [editingChatId, setEditingChatId] = useState(null);
+  const [deletingChatId, setDeletingChatId] = useState(null);
   const [editTitle, setEditTitle] = useState('');
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
-  const [deletePosition, setDeletePosition] = useState('bottom');
   const editInputRef = useRef(null);
-  const deleteButtonRefs = useRef({});
+  const deleteButtonRef = useRef(null);
 
   const handleCreateNewChat = () => {
     createNewChat();
@@ -32,7 +31,7 @@ export const Sidebar = () => {
       return;
     }
     switchChat(chatId);
-    setShowDeleteConfirm(null);
+    setDeletingChatId(null);
   };
   
   const startEditing = (chat, e) => {
@@ -69,20 +68,12 @@ export const Sidebar = () => {
   
   const handleDeleteClick = (chatId, e) => {
     e.stopPropagation();
-    
-    // Calculate available space below the button
-    const button = deleteButtonRefs.current[chatId];
-    if (button) {
-      const buttonRect = button.getBoundingClientRect();
-      const spaceBelow = window.innerHeight - buttonRect.bottom;
-      const spaceAbove = buttonRect.top;
-      
-      // If there's not enough space below but more space above, position above
-      const position = spaceBelow < 100 && spaceAbove > 100 ? 'top' : 'bottom';
-      setDeletePosition(position);
-    }
-    
-    setShowDeleteConfirm(showDeleteConfirm === chatId ? null : chatId);
+    setDeletingChatId(chatId);
+  };
+  
+  const cancelDelete = (e) => {
+    e.stopPropagation();
+    setDeletingChatId(null);
   };
   
   const confirmDelete = async (chatId, e) => {
@@ -111,11 +102,14 @@ export const Sidebar = () => {
     });
   };
   
-  // Close edit mode when clicking outside
+  // Close edit/delete mode when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (editingChatId && !e.target.closest('.editing')) {
         setEditingChatId(null);
+      }
+      if (deletingChatId && !e.target.closest('.deleting')) {
+        setDeletingChatId(null);
       }
     };
     
@@ -123,7 +117,7 @@ export const Sidebar = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [editingChatId]);
+  }, [editingChatId, deletingChatId]);
 
   return (
     <aside className="sidebar">
@@ -180,6 +174,23 @@ export const Sidebar = () => {
                     <FiX />
                   </button>
                 </div>
+              ) : deletingChatId === chat.id ? (
+                <div className="delete-confirm-container deleting">
+                  <div className="delete-confirm-buttons">
+                    <button 
+                      className="confirm-delete"
+                      onClick={(e) => confirmDelete(chat.id, e)}
+                    >
+                      Delete
+                    </button>
+                    <button 
+                      className="cancel-delete"
+                      onClick={cancelDelete}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
               ) : (
                 <div className="chat-content">
                   <div className="chat-title">{chat.title || 'Untitled Chat'}</div>
@@ -200,29 +211,6 @@ export const Sidebar = () => {
                       >
                         <FiTrash2 size={14} />
                       </button>
-                      {showDeleteConfirm === chat.id && (
-                        <div 
-                          className={`delete-confirm ${deletePosition === 'top' ? 'position-top' : ''}`}
-                          ref={el => deleteButtonRefs.current[chat.id] = el}
-                        >
-                          <span>Delete?</span>
-                          <button 
-                            className="confirm-delete"
-                            onClick={(e) => confirmDelete(chat.id, e)}
-                          >
-                            Yes
-                          </button>
-                          <button 
-                            className="cancel-delete"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setShowDeleteConfirm(null);
-                            }}
-                          >
-                            No
-                          </button>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>
