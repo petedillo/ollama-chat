@@ -33,14 +33,23 @@ const Message = ({ message, isStreaming = false, isLast = false }) => {
           <span className="message-time">{timestamp}</span>
         </div>
         <div className={`message-text ${isStreaming && isLast ? 'streaming' : ''}`}>
-          <ReactMarkdown
-            rehypePlugins={[rehypeSanitize, rehypePrism]}
-            remarkPlugins={[remarkGfm]}
-            components={MARKDOWN_COMPONENTS}
-          >
-            {message.content}
-          </ReactMarkdown>
-          {isStreaming && isLast && <span className="streaming-cursor">▍</span>}
+          {isStreaming && isLast && !message.content ? (
+            <div className="loading-indicator">
+              <FaSpinner className="spinner" />
+              <span>Generating response...</span>
+            </div>
+          ) : (
+            <>
+              <ReactMarkdown
+                rehypePlugins={[rehypeSanitize, rehypePrism]}
+                remarkPlugins={[remarkGfm]}
+                components={MARKDOWN_COMPONENTS}
+              >
+                {message.content}
+              </ReactMarkdown>
+              {isStreaming && isLast && <span className="streaming-cursor">▍</span>}
+            </>
+          )}
         </div>
       </div>
     </div>

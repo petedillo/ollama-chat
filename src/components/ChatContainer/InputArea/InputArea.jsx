@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import './InputArea.css';
+import { FaPaperPlane, FaSpinner } from 'react-icons/fa';
 
 const InputArea = ({
   messageInput,
@@ -49,7 +50,7 @@ const InputArea = ({
       onSubmit={handleSendMessage} 
       autoComplete="off"
     >
-      <div className="input-wrapper">
+      <div className={`input-wrapper ${loading ? 'loading' : ''}`}>
         <textarea
           ref={textareaRef}
           value={messageInput}
@@ -67,15 +68,12 @@ const InputArea = ({
           type="submit"
           disabled={loading || !messageInput.trim() || !currentChat}
           className="send-button"
-          aria-label="Send message"
+          aria-label={loading ? 'Sending...' : 'Send message'}
         >
           {loading ? (
-            <div className="spinner"></div>
+            <FaSpinner className="spinner-icon" />
           ) : (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <FaPaperPlane className="send-icon" />
           )}
         </button>
       </div>

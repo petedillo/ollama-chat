@@ -17,6 +17,35 @@
   position: relative;
 }
 
+.input-wrapper.loading {
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.input-wrapper.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+  z-index: 1;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
 .input-wrapper:focus-within {
   border-color: var(--color-accent-primary);
   box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.2);
@@ -81,6 +110,38 @@
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
+  opacity: 0.9;
+}
+
+.send-button:hover:not(:disabled) {
+  opacity: 1;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 240, 255, 0.4);
+}
+
+.send-button:disabled {
+  background: var(--color-bg-tertiary);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.send-icon, .spinner-icon {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.send-button:not(:disabled):hover .send-icon {
+  transform: translateX(1px) translateY(-1px);
+}
+
+.spinner-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .send-button::before {
