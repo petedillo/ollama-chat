@@ -4,9 +4,17 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  background-color: var(--color-bg-primary);
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: transparent;
   position: relative;
   overflow: hidden;
+  padding: 0 1rem 1rem;
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
+  justify-content: flex-end;
+  padding-bottom: 0;
 }
 
 /* Animation for message appearance */

@@ -6,6 +6,7 @@ import './ChatItem.css';
 
 export const ChatItem = ({
   chat,
+  currentChatId,
   isActive,
   isEditing,
   isDeleting,
@@ -63,55 +64,68 @@ export const ChatItem = ({
   // Maintain consistent height for all states
   const contentHeight = '60px';
 
+  // Get the first message preview (first 30 chars) if it exists
+  const messagePreview = chat?.messages?.[0]?.content?.substring(0, 30) || '';
+  const isCurrentChat = chat.id === currentChatId;
+
+  const initial = chat.title ? chat.title.charAt(0).toUpperCase() : 'N';
+
+  if (isEditing) {
+    return (
+      <EditChatForm
+        initialTitle={chat.title}
+        onSave={handleSaveEdit}
+        onCancel={handleCancelEdit}
+      />
+    );
+  }
+
+  if (isDeleting) {
+    return (
+      <DeleteConfirmation
+        onConfirm={handleConfirmDeleteClick}
+        onCancel={handleCancelEdit}
+      />
+    );
+  }
+
   return (
-    <div 
-      className={`chat-item ${isActive ? 'active' : ''} ${isEditing ? 'editing' : ''} ${isDeleting ? 'deleting' : ''}`}
+    <li
+      className={`chat-item ${isCurrentChat ? 'active' : ''} ${isEditing ? 'editing' : ''}`}
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      style={{ minHeight: contentHeight, height: contentHeight }}
+      title={chat.title || 'Untitled Chat'}
     >
-      <div className="chat-item-content" style={{ height: '100%', display: 'flex', alignItems: 'center', width: '100%' }}>
-        {isEditing ? (
-          <EditChatForm 
-            initialTitle={editTitle}
-            onSave={handleSaveEdit}
-            onCancel={handleCancelEdit}
-          />
-        ) : isDeleting ? (
-          <div className="delete-confirmation-wrapper" style={{ width: '100%' }}>
-            <DeleteConfirmation 
-              onConfirm={handleConfirmDeleteClick}
-              onCancel={handleCancelEdit}
-            />
-          </div>
-        ) : (
-          <div className="chat-content" style={{ width: '100%' }}>
-            <div className="chat-info" style={{ flex: 1, minWidth: 0 }}>
-              <div className="chat-title">{chat.title || 'Untitled Chat'}</div>
-              <div className="chat-date">{formatDate(chat.updatedAt || chat.createdAt)}</div>
-            </div>
-            <div className={`chat-actions ${isHovered || isActive ? 'visible' : ''}`}>
-              <button 
-                className="edit-button"
-                onClick={handleEditClick}
-                title="Rename chat"
-                aria-label="Rename chat"
-              >
-                <FiEdit2 size={16} />
-              </button>
-              <button 
-                className="delete-button"
-                onClick={handleDeleteClick}
-                title="Delete chat"
-                aria-label="Delete chat"
-              >
-                <FiTrash2 size={16} />
-              </button>
-            </div>
-          </div>
-        )}
+      <div className="chat-item-initial" aria-hidden="true">
+        {initial}
       </div>
-    </div>
+      <div className="chat-item-content" style={{ height: '100%', display: 'flex', alignItems: 'center', width: '100%' }}>
+        <div className="chat-item-content">
+          <div className="chat-item-title">
+            {chat.title || ''}
+          </div>
+          <div className="chat-preview">
+            {messagePreview}
+          </div>
+        </div>
+        <div className="chat-item-actions">
+          <button
+            className="edit-button"
+            onClick={handleEditClick}
+            aria-label="Edit chat title"
+          >
+            <FiEdit2 size={14} />
+          </button>
+          <button
+            className="delete-button"
+            onClick={handleDeleteClick}
+            aria-label="Delete chat"
+          >
+            <FiTrash2 size={14} />
+          </button>
+        </div>
+      </div>
+    </li>
   );
 };

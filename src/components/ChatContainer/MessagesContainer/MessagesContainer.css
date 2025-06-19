@@ -1,12 +1,39 @@
 .messages-container {
   flex: 1;
   overflow-y: auto;
-  padding: var(--spacing-xl);
+  padding: 1rem 0.5rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  justify-content: flex-end;
+  gap: 0.25rem;
   scroll-behavior: smooth;
   position: relative;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  background-color: transparent;
+  min-height: 0;
+  margin-top: auto;
+}
+
+/* Custom scrollbar */
+.messages-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 3px;
+}
+
+.messages-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-secondary);
 }
 
 .loading-indicator {

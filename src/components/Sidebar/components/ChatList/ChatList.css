@@ -1,10 +1,22 @@
 .chat-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: var(--spacing-sm);
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-sm);
+}
+
+/* Collapsed state */
+.sidebar.collapsed .chat-list {
+  align-items: center;
+}
+
+.sidebar.collapsed.hovered .chat-list {
+  align-items: stretch;
 }
 
 .loading-indicator,

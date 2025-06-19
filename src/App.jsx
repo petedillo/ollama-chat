@@ -9,14 +9,14 @@ function App() {
   return (
     <ChatProvider>
       <div className="app-layout">
-        <Header />
+        <Sidebar />
         <div className="main-container">
-          <Sidebar />
+          <Header />
           <main className="main-content">
             <ChatContainer />
           </main>
+          <Footer />
         </div>
-        <Footer />
       </div>
     </ChatProvider>
   )

@@ -1,10 +1,17 @@
 .input-container {
-  padding: var(--spacing-md);
-  border-top: 1px solid var(--color-border);
+  padding: 1rem 0.75rem;
   background-color: var(--color-bg-secondary);
-  position: relative;
+  position: sticky;
+  bottom: 0;
   width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
   box-sizing: border-box;
+  flex-shrink: 0;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+  margin-top: auto;
 }
 
 .input-wrapper {
@@ -15,6 +22,8 @@
   border: 1px solid var(--color-border);
   transition: all 0.2s ease;
   position: relative;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .input-wrapper.loading {

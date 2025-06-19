@@ -9,7 +9,8 @@ export const ChatList = ({
   onChatSelect, 
   onChatEdit, 
   onChatDelete,
-  onChatUpdateTitle
+  isCollapsed = false,
+  onToggleCollapse
 }) => {
   const [editingChatId, setEditingChatId] = useState(null);
   const [deletingChatId, setDeletingChatId] = useState(null);
@@ -58,38 +59,59 @@ export const ChatList = ({
     setDeletingChatId(null);
   };
 
-  if (loading && chats.length === 0) {
-    return <div className="loading-indicator">Loading chats...</div>;
-  }
-
-  if (chats.length === 0) {
-    return (
-      <div className="empty-state">
-        <p>No chat sessions yet</p>
-        <p>Start a new conversation!</p>
-      </div>
-    );
-  }
+  const handleToggleCollapse = (e) => {
+    e?.stopPropagation();
+    onToggleCollapse?.();
+  };
 
   return (
     <div className="chat-list">
-      {chats.map(chat => (
-        <ChatItem
-          key={chat.id}
-          chat={chat}
-          isActive={chat.id === currentChatId}
-          isEditing={editingChatId === chat.id}
-          isDeleting={deletingChatId === chat.id}
-          editTitle={editTitle}
-          onEditTitleChange={setEditTitle}
-          onSelect={onChatSelect}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onConfirmDelete={handleConfirmDelete}
-          onUpdateTitle={handleUpdateTitle}
-          onCancel={handleCancel}
-        />
-      ))}
+      {loading ? (
+        <div className="loading-indicator">Loading chats...</div>
+      ) : chats.length === 0 ? (
+        <div className="empty-state">No chats yet. Start a new chat!</div>
+      ) : (
+        <div>
+          {chats.map((chat) => (
+            <ChatItem
+              key={chat.id}
+              chat={chat}
+              currentChatId={currentChatId}
+              isActive={chat.id === currentChatId}
+              isCollapsed={isCollapsed}
+              onSelect={onChatSelect}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              onUpdateTitle={handleUpdateTitle}
+              onConfirmDelete={handleConfirmDelete}
+              onCancel={handleCancel}
+              isEditing={editingChatId === chat.id}
+              isDeleting={deletingChatId === chat.id}
+              editTitle={editTitle}
+              onEditTitleChange={(e) => setEditTitle(e.target.value)}
+            />
+          ))}
+          {chats.length > 5 && (
+            <button 
+              className="toggle-chat-list"
+              onClick={handleToggleCollapse}
+              aria-label={isCollapsed ? 'Show all chats' : 'Show less chats'}
+            >
+              {isCollapsed ? (
+                <>
+                  <FiChevronDown className="toggle-icon" />
+                  <span className="toggle-text">Show more</span>
+                </>
+              ) : (
+                <>
+                  <FiChevronUp className="toggle-icon" />
+                  <span className="toggle-text">Show less</span>
+                </>
+              )}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };
