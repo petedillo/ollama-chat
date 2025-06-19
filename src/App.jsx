@@ -1,5 +1,5 @@
 import { Header } from './components/Header/Header'
-import { Sidebar } from './components/Sidebar/Sidebar'
+import { Sidebar } from './components/Sidebar'
 import { ChatContainer } from './components/ChatContainer/ChatContainer'
 import { Footer } from './components/Footer/Footer'
 import { ChatProvider } from './context/ChatContext'

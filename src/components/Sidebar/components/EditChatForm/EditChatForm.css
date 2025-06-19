@@ -1,0 +1,73 @@
+.edit-title-container {
+  display: flex;
+  width: 100%;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.edit-title-input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-input);
+  color: var(--color-text-primary);
+  font-size: 0.95em;
+  transition: all 0.2s ease;
+  height: 2.25rem;
+}
+
+.edit-title-input:focus {
+  outline: none;
+  border-color: var(--color-action-edit);
+  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.2);
+}
+
+.save-edit-button,
+.cancel-edit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-tertiary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.save-edit-button {
+  color: var(--color-action-edit);
+  border-color: var(--color-action-edit);
+}
+
+.save-edit-button:not(:disabled):hover {
+  background: var(--color-action-edit);
+  color: var(--color-bg-primary);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+}
+
+.save-edit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--color-border);
+}
+
+.cancel-edit-button {
+  color: var(--color-action-cancel);
+  border-color: var(--color-border);
+}
+
+.cancel-edit-button:hover {
+  background: var(--color-action-cancel);
+  color: var(--color-text-primary);
+  border-color: var(--color-action-cancel);
+}
+
+.save-edit-button:active,
+.cancel-edit-button:active {
+  transform: translateY(1px);
+}

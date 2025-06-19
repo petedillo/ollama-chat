@@ -15,6 +15,17 @@
   --color-accent-secondary: #ff00ff;
   --color-accent-tertiary: #00ff9d;
   
+  /* Action colors */
+  --color-action-edit: #00f0ff;
+  --color-action-delete: #ff3d71;
+  --color-action-confirm: #00e096;
+  --color-action-cancel: #6a6a8f;
+  --color-action-hover: #ffffff;
+  
+  /* Button states */
+  --color-button-hover-bg: rgba(255, 255, 255, 0.1);
+  --color-button-active-bg: rgba(255, 255, 255, 0.2);
+  
   /* Message colors */
   --color-message-user: rgba(0, 240, 255, 0.15);
   --color-message-assistant: #1a1a25;

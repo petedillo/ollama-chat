@@ -1,0 +1,236 @@
+.chat-item {
+  padding: 0.5rem 0.75rem;
+  margin: 0 0.5rem 0.5rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(4px);
+  overflow: hidden;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  width: calc(100% - 1rem); /* Account for margin */
+  box-sizing: border-box;
+}
+
+.chat-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--color-accent-primary);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.3s ease;
+}
+
+.chat-item:hover {
+  background: var(--color-bg-tertiary);
+  transform: translateX(4px);
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 2px 12px rgba(0, 240, 255, 0.15);
+}
+
+.chat-item:hover::before {
+  transform: scaleY(1);
+}
+
+.chat-item.active {
+  background: linear-gradient(90deg, 
+    rgba(0, 240, 255, 0.1) 0%, 
+    rgba(0, 240, 255, 0.05) 100%);
+  border: 1px solid var(--color-accent-primary);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+  transform: translateX(4px);
+}
+
+.chat-item.active::before {
+  transform: scaleY(1);
+  background: var(--color-accent-primary);
+}
+
+.chat-item.editing {
+  background: rgba(0, 240, 255, 0.07);
+  border: 1px dashed var(--color-accent-primary);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+}
+
+.chat-item.deleting {
+  background-color: rgba(255, 61, 113, 0.1);
+  border: 1px solid rgba(255, 61, 113, 0.2);
+}
+
+.chat-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 2px 0;
+  position: relative;
+  gap: 0.5rem;
+}
+
+.chat-info {
+  flex: 1;
+  min-width: 0;
+  padding-right: 0.5rem;
+  overflow: hidden;
+}
+
+.chat-title {
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.9em;
+  line-height: 1.3;
+}
+
+.chat-date {
+  font-size: 0.7em;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-actions {
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  margin-left: auto;
+  padding: 2px 4px;
+  flex-shrink: 0;
+}
+
+.chat-item:hover .chat-actions,
+.chat-item.active .chat-actions {
+  opacity: 1;
+}
+
+/* Show actions on mobile when active */
+@media (max-width: 480px) {
+  .chat-actions {
+    opacity: 1;
+  }
+}
+
+.chat-item:hover .chat-actions,
+.chat-item.active .chat-actions {
+  opacity: 1;
+}
+
+.edit-button,
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  margin: 0;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.edit-button {
+  color: var(--color-action-edit);
+}
+
+.delete-button {
+  color: var(--color-action-delete);
+}
+
+.edit-button::before,
+.delete-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: currentColor;
+  opacity: 0.1;
+  border-radius: 4px;
+  transition: opacity 0.2s ease;
+}
+
+.edit-button:hover::before,
+.delete-button:hover::before {
+  opacity: 0.2;
+}
+
+.edit-button:hover {
+  color: var(--color-action-edit);
+  transform: scale(1.15);
+  background: none;
+}
+
+.delete-button:hover {
+  color: var(--color-action-delete);
+  transform: scale(1.15);
+  background: none;
+}
+
+.edit-button:active,
+.delete-button:active {
+  transform: scale(0.95);
+}
+
+/* Make sure icons are always visible */
+.edit-button svg,
+.delete-button svg {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 0 2px currentColor);
+}
+
+.chat-item.active .edit-button,
+.chat-item.active .delete-button {
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-accent-primary);
+  opacity: 1;
+}
+
+.chat-item.active .edit-button {
+  color: var(--color-action-edit);
+}
+
+.chat-item.active .delete-button {
+  color: var(--color-action-delete);
+}
+
+.delete-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-title {
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-date {
+  font-size: 0.75em;
+  color: var(--color-text-secondary);
+}
