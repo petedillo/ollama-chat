@@ -125,22 +125,41 @@ export const ChatProvider = ({ children }) => {
     if (!chatId) return false;
     
     try {
+      // First, update the UI optimistically
+      const wasLastChat = chatSessions.length === 1 && chatSessions[0].id === chatId;
+      
+      // If this is the last chat, clear the current chat first
+      if (wasLastChat) {
+        setCurrentChatId(null);
+        setCurrentChat(null);
+      }
+      
+      // Remove the chat from sessions
+      const updatedChatSessions = chatSessions.filter(chat => chat.id !== chatId);
+      setChatSessions(updatedChatSessions);
+      
+      // Perform the actual deletion
       await deleteChat(chatId);
       
-      // Remove from chatSessions
-      setChatSessions(prev => prev.filter(chat => chat.id !== chatId));
-      
-      // If the deleted chat is the current one, switch to another chat or create a new one
+      // If we deleted the current chat
       if (currentChatId === chatId) {
-        const remainingChats = chatSessions.filter(chat => chat.id !== chatId);
-        if (remainingChats.length > 0) {
-          setCurrentChatId(remainingChats[0].id);
-        } else {
-          // No chats left, create a new one
+        if (updatedChatSessions.length > 0) {
+          // Switch to the first available chat
+          const nextChatId = updatedChatSessions[0].id;
+          setCurrentChatId(nextChatId);
+          
+          // Fetch the chat to update the currentChat state
+          const chatData = await fetchChatById(nextChatId);
+          setCurrentChat(chatData);
+        } else if (!wasLastChat) {
+          // Only create a new chat if this wasn't the last chat
+          // (if it was the last chat, we already cleared the state)
           const newChat = await createNewChat();
           if (newChat) {
             setCurrentChatId(newChat.id);
+            setCurrentChat({ ...newChat, messages: [] });
           } else {
+            // Reset to initial state if creating new chat fails
             setCurrentChatId(null);
             setCurrentChat(null);
           }
@@ -149,6 +168,16 @@ export const ChatProvider = ({ children }) => {
       
       return true;
     } catch (err) {
+      // If there was an error, refetch the chats to restore consistent state
+      await fetchChatSessions();
+      if (currentChatId) {
+        await fetchChat(currentChatId);
+      } else if (chatSessions.length > 0) {
+        // If we have chats but no current chat, set the first one as current
+        setCurrentChatId(chatSessions[0].id);
+        await fetchChat(chatSessions[0].id);
+      }
+      
       setError(err.message);
       console.error('Error deleting chat:', err);
       return false;
