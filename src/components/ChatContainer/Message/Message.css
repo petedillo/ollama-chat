@@ -1,0 +1,301 @@
+/* Message container */
+.message {
+  display: flex;
+  max-width: 85%;
+  margin: 0.5rem 0;
+  position: relative;
+  animation: messageAppear 0.3s ease-out;
+  transition: all 0.2s ease;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+}
+
+.message:last-child {
+  margin-bottom: 1.5rem;
+}
+
+@keyframes messageAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* User message styling */
+.user-message {
+  align-self: flex-end;
+  background: linear-gradient(135deg, var(--color-message-user), rgba(0, 240, 255, 0.1));
+  margin-left: 2.5rem;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+/* Assistant message styling */
+.assistant-message {
+  align-self: flex-start;
+  background-color: var(--color-message-assistant);
+  margin-right: 2.5rem;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+
+/* Avatar styling */
+.message-avatar {
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-primary);
+}
+
+.user-avatar {
+  background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-tertiary));
+}
+
+.bot-avatar {
+  background: linear-gradient(135deg, #8a2be2, #6a5acd);
+}
+
+/* Message content container */
+.message-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Message header with role and timestamp */
+.message-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+  gap: 0.75rem;
+}
+
+.message-role {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--color-text-primary);
+  letter-spacing: 0.3px;
+}
+
+.message-time {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  opacity: 0.8;
+}
+
+/* Message text styling */
+.message-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  word-break: break-word;
+  color: var(--color-text-primary);
+  overflow-x: auto;
+}
+
+/* Loading indicator */
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.loading-indicator .spinner {
+  animation: spin 1s linear infinite;
+  color: var(--color-accent-primary);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Streaming cursor animation */
+.streaming-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  margin-left: 2px;
+  background-color: var(--color-accent-primary);
+  animation: blink 1s step-end infinite, pulse 1.5s ease-in-out infinite;
+  vertical-align: middle;
+  transform: translateY(1px);
+  box-shadow: 0 0 10px var(--color-accent-primary);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Markdown styling */
+.message-text p {
+  margin: 0.75em 0;
+  line-height: 1.7;
+}
+
+.message-text p:first-child {
+  margin-top: 0;
+}
+
+.message-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* Code blocks */
+.message-text pre {
+  margin: 0.75em 0;
+  padding: 1em;
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  font-size: 0.9em;
+  line-height: 1.5;
+  background-color: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.message-text code {
+  font-family: 'Fira Code', 'Cascadia Code', 'Consolas', 'Monaco', 'Andale Mono', monospace;
+  font-size: 0.9em;
+  background-color: var(--color-bg-tertiary);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  color: var(--color-text-primary);
+}
+
+/* Inline code */
+.message-text code:not(pre > code) {
+  background-color: var(--color-bg-tertiary);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+/* Tables */
+.message-text table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+  overflow-x: auto;
+  display: block;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.message-text th,
+.message-text td {
+  border: 1px solid var(--color-border);
+  padding: 0.5em 0.75em;
+  text-align: left;
+  font-size: 0.9em;
+}
+
+.message-text th {
+  background-color: var(--color-bg-tertiary);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* Blockquotes */
+.message-text blockquote {
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  color: var(--color-text-secondary);
+  border-left: 3px solid var(--color-accent-primary);
+  background-color: rgba(0, 240, 255, 0.05);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+/* Links */
+.message-text a {
+  color: var(--color-accent-primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.message-text a:hover {
+  color: var(--color-accent-secondary);
+  border-bottom-color: currentColor;
+}
+
+/* Lists */
+.message-text ul,
+.message-text ol {
+  margin: 0.75em 0;
+  padding-left: 1.5em;
+}
+
+.message-text li {
+  margin: 0.25em 0;
+  padding-left: 0.25em;
+}
+
+/* Headers */
+.message-text h1,
+.message-text h2,
+.message-text h3,
+.message-text h4,
+.message-text h5,
+.message-text h6 {
+  margin: 1.25em 0 0.75em;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+}
+
+.message-text h1 { font-size: 1.6em; }
+.message-text h2 { font-size: 1.4em; }
+.message-text h3 { font-size: 1.2em; }
+.message-text h4 { font-size: 1.1em; }
+.message-text h5 { font-size: 1em; }
+.message-text h6 { font-size: 0.9em; }
+
+/* Horizontal rule */
+.message-text hr {
+  border: none;
+  height: 1px;
+  background-color: var(--color-border);
+  margin: 1.5em 0;
+  opacity: 0.5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .message {
+    max-width: 90%;
+    padding: 0.75rem;
+  }
+  
+  .user-message {
+    margin-left: 1.5rem;
+  }
+  
+  .assistant-message {
+    margin-right: 1.5rem;
+  }
+  
+  .message-text {
+    font-size: 0.9rem;
+  }
+}
