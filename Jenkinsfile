@@ -7,8 +7,6 @@ pipeline {
         DOCKER_REGISTRY = credentials('REGISTRY_URL')
         DEPLOYMENT_HOST = credentials('HOST_CLIENTPI')
         VITE_API_BASE_URL = credentials('DIOCHAT_BASE_URL')
-        COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-        FULL_IMAGE_NAME = "${DOCKER_REGISTRY}/ollama-chat"
     }
     
     options {
@@ -18,6 +16,15 @@ pipeline {
     }
     
     stages {
+        stage('Setup Environment') {
+            steps {
+                script {
+                    env.COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    env.FULL_IMAGE_NAME = "${env.DOCKER_REGISTRY}/ollama-chat"
+                }
+            }
+        }
+        
         stage('Validate Config') {
             steps {
                 script {
