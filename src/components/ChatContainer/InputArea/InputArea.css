@@ -12,6 +12,9 @@
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
   z-index: 10;
   margin-top: auto;
+  background: var(--color-bg-secondary);
+  backdrop-filter: blur(10px);
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
 
 .input-wrapper {

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import React, { useState, useEffect, memo, useCallback } from 'react';
 import { ChatItem } from '../ChatItem/ChatItem';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import './ChatList.css';
 
-export const ChatList = ({ 
+export const ChatList = memo(({ 
   chats = [], 
   currentChatId, 
   loading, 
@@ -59,59 +60,48 @@ export const ChatList = ({
     setDeletingChatId(null);
   };
 
-  const handleToggleCollapse = (e) => {
+  const handleToggleCollapse = useCallback((e) => {
     e?.stopPropagation();
-    onToggleCollapse?.();
-  };
+    onToggleCollapse?.(e);
+  }, [onToggleCollapse]);
+
+  // Reset editing and deleting states when collapsing/expanding
+  useEffect(() => {
+    if (isCollapsed) {
+      setEditingChatId(null);
+      setDeletingChatId(null);
+    }
+  }, [isCollapsed]);
 
   return (
-    <div className="chat-list">
-      {loading ? (
-        <div className="loading-indicator">Loading chats...</div>
-      ) : chats.length === 0 ? (
-        <div className="empty-state">No chats yet. Start a new chat!</div>
-      ) : (
-        <div>
-          {chats.map((chat) => (
-            <ChatItem
-              key={chat.id}
-              chat={chat}
-              currentChatId={currentChatId}
-              isActive={chat.id === currentChatId}
-              isCollapsed={isCollapsed}
-              onSelect={onChatSelect}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              onUpdateTitle={handleUpdateTitle}
-              onConfirmDelete={handleConfirmDelete}
-              onCancel={handleCancel}
-              isEditing={editingChatId === chat.id}
-              isDeleting={deletingChatId === chat.id}
-              editTitle={editTitle}
-              onEditTitleChange={(e) => setEditTitle(e.target.value)}
-            />
-          ))}
-          {chats.length > 5 && (
-            <button 
-              className="toggle-chat-list"
-              onClick={handleToggleCollapse}
-              aria-label={isCollapsed ? 'Show all chats' : 'Show less chats'}
-            >
-              {isCollapsed ? (
-                <>
-                  <FiChevronDown className="toggle-icon" />
-                  <span className="toggle-text">Show more</span>
-                </>
-              ) : (
-                <>
-                  <FiChevronUp className="toggle-icon" />
-                  <span className="toggle-text">Show less</span>
-                </>
-              )}
-            </button>
-          )}
-        </div>
-      )}
-    </div>
+    <div className={`chat-list ${isCollapsed ? 'collapsed' : ''}`}>
+    {loading ? (
+      <div className="loading-indicator">Loading chats...</div>
+    ) : chats.length === 0 ? (
+      <div className="empty-state">No chats yet</div>
+    ) : (
+      <div className="chat-items">
+        {chats.map((chat) => (
+          <ChatItem
+            key={chat.id}
+            chat={chat}
+            currentChatId={currentChatId}
+            isActive={chat.id === currentChatId}
+            isEditing={editingChatId === chat.id}
+            isDeleting={deletingChatId === chat.id}
+            onSelect={onChatSelect}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onConfirmDelete={handleConfirmDelete}
+            onUpdateTitle={handleUpdateTitle}
+            onCancel={handleCancel}
+            isCollapsed={isCollapsed}
+            editTitle={editTitle}
+            onEditTitleChange={(e) => setEditTitle(e.target.value)}
+          />
+        ))}
+      </div>
+    )}
+  </div>
   );
-};
+});

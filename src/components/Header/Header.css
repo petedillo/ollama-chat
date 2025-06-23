@@ -2,21 +2,20 @@
   background-color: var(--color-bg-secondary);
   color: var(--color-text-primary);
   padding: 0 1.5rem;
-  height: var(--header-height);
   display: flex;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
-  top: 0;
-  z-index: 90;
   transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  height: var(--header-height);
+  
 }
 
 .header h1 {
-  margin: 0;
-  font-size: 1.5rem;
+  font-size: clamp(1.25rem, 4vw, 1.5rem);
   font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin: 0;
+  width: 100%;
+  text-align: right;
 }

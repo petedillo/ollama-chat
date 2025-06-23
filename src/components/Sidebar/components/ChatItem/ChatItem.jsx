@@ -17,7 +17,8 @@ export const ChatItem = ({
   onDelete,
   onConfirmDelete,
   onUpdateTitle,
-  onCancel
+  onCancel,
+  isCollapsed = false
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -64,12 +65,6 @@ export const ChatItem = ({
   // Maintain consistent height for all states
   const contentHeight = '60px';
 
-  // Get the first message preview (first 30 chars) if it exists
-  const messagePreview = chat?.messages?.[0]?.content?.substring(0, 30) || '';
-  const isCurrentChat = chat.id === currentChatId;
-
-  const initial = chat.title ? chat.title.charAt(0).toUpperCase() : 'N';
-
   if (isEditing) {
     return (
       <EditChatForm
@@ -89,43 +84,54 @@ export const ChatItem = ({
     );
   }
 
+  const avatarText = chat.title ? chat.title.charAt(0).toUpperCase() : 'C';
+  const showActions = isHovered && !isCollapsed && !isEditing && !isDeleting;
+  const messagePreview = chat?.messages?.[0]?.content?.substring(0, 30) || '';
+  const isCurrentChat = chat.id === currentChatId;
+
   return (
     <li
-      className={`chat-item ${isCurrentChat ? 'active' : ''} ${isEditing ? 'editing' : ''}`}
+      className={`chat-item ${isCurrentChat ? 'active' : ''} ${isCollapsed ? 'collapsed' : ''}`}
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      title={chat.title || 'Untitled Chat'}
+      title={isCollapsed ? chat.title || 'Untitled Chat' : undefined}
     >
-      <div className="chat-item-initial" aria-hidden="true">
-        {initial}
+      <div className="chat-item-avatar">
+        {avatarText}
       </div>
-      <div className="chat-item-content" style={{ height: '100%', display: 'flex', alignItems: 'center', width: '100%' }}>
+      
+      {!isCollapsed && (
         <div className="chat-item-content">
           <div className="chat-item-title">
-            {chat.title || ''}
+            {chat.title || 'Untitled Chat'}
           </div>
-          <div className="chat-preview">
-            {messagePreview}
-          </div>
+          {messagePreview && (
+            <div className="chat-item-preview">
+              {messagePreview}
+            </div>
+          )}
         </div>
+      )}
+
+      {showActions && (
         <div className="chat-item-actions">
           <button
-            className="edit-button"
+            className="chat-item-action"
             onClick={handleEditClick}
             aria-label="Edit chat title"
           >
             <FiEdit2 size={14} />
           </button>
           <button
-            className="delete-button"
+            className="chat-item-action"
             onClick={handleDeleteClick}
             aria-label="Delete chat"
           >
             <FiTrash2 size={14} />
           </button>
         </div>
-      </div>
+      )}
     </li>
   );
 };
