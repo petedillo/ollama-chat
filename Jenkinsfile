@@ -16,4 +16,4 @@ Map pipelineConfig = [
 ]
 
 // Call the shared library pipeline
-singleImageBuildPipeline(pipelineConfig)
+singleImageBuild(pipelineConfig)
