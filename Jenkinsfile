@@ -1,3 +1,5 @@
+@Library('jenkins-shared-library@main') _
+
 singleImageBuild(
     repo: 'https://github.com/petedillo/ollama-chat',
     registry: 'diolab:5000',
