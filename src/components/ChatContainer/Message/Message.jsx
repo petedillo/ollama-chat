@@ -9,7 +9,7 @@ import './Message.css';
 
 const Message = ({ message, isStreaming = false, isLast = false }) => {
   const isUser = message.role === 'user';
-  const timestamp = new Date(message.timestamp || Date.now()).toLocaleTimeString([], { 
+  const timestamp = new Date(message.createdAt || Date.now()).toLocaleTimeString([], { 
     hour: '2-digit', 
     minute: '2-digit' 
   });
