@@ -1,3 +1,6 @@
+/* Prism.js syntax highlighting */
+@import './styles/prism-theme.css';
+
 :root {
   /* Dark theme colors - Neon Dark Theme */
   --color-bg-primary: #0a0a0f;
