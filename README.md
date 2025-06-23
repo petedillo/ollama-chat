@@ -66,28 +66,6 @@ Dio Chat can be easily deployed using Docker:
 
 3. Access the application at [http://localhost](http://localhost)
 
-### Docker Compose
-
-For a more complete setup with environment variables, you can use Docker Compose:
-
-1. Create a `docker-compose.yml` file:
-   ```yaml
-   version: '3.8'
-   services:
-     dio-chat:
-       build: .
-       ports:
-         - "80:80"
-       restart: unless-stopped
-       environment:
-         - NODE_ENV=production
-   ```
-
-2. Start the services:
-   ```bash
-   docker-compose up -d
-   ```
-
 ## Configuration
 
 Environment variables can be set in a `.env` file:
