@@ -8,7 +8,6 @@ A modern, responsive chat application built with React and Vite. Dio Chat provid
 - 💬 Multiple chat sessions with persistent storage
 - ✏️ Edit and delete chat sessions
 - 🎨 Clean and modern interface
-- 📱 Mobile-friendly design
 
 ## Prerequisites
 
