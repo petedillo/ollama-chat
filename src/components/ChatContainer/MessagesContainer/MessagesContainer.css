@@ -1,12 +1,42 @@
 .messages-container {
   flex: 1;
   overflow-y: auto;
-  padding: var(--spacing-xl);
+  padding: 1rem 0.5rem 140px; /* Increased bottom padding to ensure space above input */
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  justify-content: flex-start;
+  gap: 0.5rem;
   scroll-behavior: smooth;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  background-color: transparent;
+  min-height: 0;
+  overflow-anchor: none;
   position: relative;
+  max-height: 100%;
+  scroll-padding-bottom: 140px; /* Ensure smooth scrolling to bottom */
+  padding-bottom: max(140px, env(safe-area-inset-bottom)); /* Account for mobile notches */
+}
+
+/* Custom scrollbar */
+.messages-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 3px;
+}
+
+.messages-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-secondary);
 }
 
 .loading-indicator {

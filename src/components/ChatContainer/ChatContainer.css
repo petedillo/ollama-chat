@@ -2,11 +2,17 @@
 .chat-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  align-items: center;
   width: 100%;
-  background-color: var(--color-bg-primary);
+  max-width: 900px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  background: transparent;
   position: relative;
   overflow: hidden;
+  justify-content: space-between;
 }
 
 /* Animation for message appearance */

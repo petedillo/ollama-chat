@@ -1,0 +1,82 @@
+.edit-title-container {
+  display: flex;
+  width: 100%;
+  gap: 0.25rem;
+  align-items: center;
+  padding: 0;
+  height: 100%;
+}
+
+.edit-title-input {
+  width: calc(100% - 60px); /* Account for buttons */
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background-color: var(--color-bg-input);
+  color: var(--color-text-primary);
+  font-size: 0.9em;
+  transition: all 0.15s ease;
+  height: 28px;
+  line-height: 1.2;
+  margin: 0 2px 0 0;
+  box-shadow: none;
+}
+
+.edit-title-input:focus {
+  outline: none;
+  border-color: var(--color-action-edit);
+  box-shadow: 0 0 0 1px var(--color-action-edit);
+}
+
+.save-edit-button,
+.cancel-edit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  padding: 0;
+  margin: 0 1px;
+  color: var(--color-text-secondary);
+}
+
+.save-edit-button {
+  color: var(--color-action-edit);
+  border-color: var(--color-action-edit);
+}
+
+.save-edit-button:not(:disabled):hover {
+  background: var(--color-action-edit);
+  color: var(--color-bg-primary);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+}
+
+.save-edit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--color-border);
+}
+
+.cancel-edit-button {
+  color: var(--color-action-cancel);
+  border-color: var(--color-border);
+}
+
+.cancel-edit-button:hover {
+  background: var(--color-action-cancel);
+  color: var(--color-text-primary);
+  border-color: var(--color-action-cancel);
+}
+
+.save-edit-button:active,
+.cancel-edit-button:active {
+  transform: translateY(1px);
+}

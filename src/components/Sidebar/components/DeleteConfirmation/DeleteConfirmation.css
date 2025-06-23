@@ -1,0 +1,205 @@
+.delete-confirm-container {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  min-height: 52px;
+  box-sizing: border-box;
+  background: rgba(255, 61, 113, 0.08);
+  border-radius: var(--radius-md);
+  position: relative;
+  z-index: 10;
+  margin: 0.5rem 0.5rem 0.5rem;
+  transition: all 0.2s ease;
+  cursor: default;
+  display: flex;
+  align-items: center;
+}
+
+.delete-confirm-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.delete-icon {
+  color: var(--color-action-delete);
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.delete-confirm-container:hover {
+  background: rgba(255, 61, 113, 0.12);
+  transform: translateX(4px);
+}
+
+.delete-confirm-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--color-action-delete);
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.delete-confirm-text {
+  flex: 1;
+  color: var(--color-text-primary);
+  font-size: 0.9em;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+}
+
+.delete-confirm-actions {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
+  width: 60px;
+  justify-content: flex-end;
+  opacity: 1;
+}
+
+.confirm-button,
+.cancel-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  padding: 0;
+  margin: 0 1px;
+}
+
+.confirm-button {
+  color: var(--color-action-delete);
+  border: 1px solid var(--color-action-delete);
+  background: rgba(255, 61, 113, 0.2);
+}
+
+.confirm-button:hover {
+  background: var(--color-action-delete);
+  color: var(--color-text-primary);
+  box-shadow: 0 0 10px rgba(255, 61, 113, 0.4);
+}
+
+.confirm-button:active {
+  transform: translateY(1px);
+  background: rgba(255, 61, 113, 0.8);
+}
+
+.cancel-button {
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.cancel-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--color-text-primary);
+  border-color: var(--color-text-secondary);
+}
+
+.cancel-button:active {
+  transform: translateY(1px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes pulseWarning {
+  0% { 
+    background: rgba(255, 61, 113, 0.08);
+  }
+  50% { 
+    background: rgba(255, 61, 113, 0.15);
+  }
+  100% { 
+    background: rgba(255, 61, 113, 0.08);
+  }
+}
+
+/* Adjust button sizes on smaller screens */
+@media (max-width: 480px) {
+  .confirm-delete,
+  .cancel-delete {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75em;
+    height: 26px;
+  }
+}
+
+.confirm-button {
+  color: var(--color-action-delete);
+}
+
+.confirm-button:hover {
+  background: rgba(255, 61, 113, 0.1);
+  transform: scale(1.1);
+}
+
+.confirm-button:active {
+  transform: scale(0.95);
+}
+
+.cancel-button:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: scale(1.1);
+}
+
+.cancel-button:active {
+  transform: scale(0.95);
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tooltip style for the confirmation container */
+.delete-confirm-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 6px solid var(--color-border);
+  transform: translateY(-50%);
+}
+
+.delete-confirm-container::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid var(--color-bg-secondary);
+  transform: translateY(-50%);
+  z-index: 1;
+}
