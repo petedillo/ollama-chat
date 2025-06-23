@@ -13,9 +13,14 @@ RUN npm ci
 # Copy all project files
 COPY . .
 
+# Define ARG for environment variables.
+ARG VITE_API_BASE_URL
+
+# Set the ARG as environment variable
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+
 # Build the app
 RUN npm run build
-
 # Production stage
 FROM nginx:alpine
 
