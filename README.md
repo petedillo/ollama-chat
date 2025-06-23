@@ -1,6 +1,6 @@
 # Dio Chat
 
-A modern, responsive chat application built with React and Vite. Dio Chat provides a clean and intuitive interface for real-time messaging with support for multiple chat sessions.
+A modern, responsive chat application built with React and Vite. Dio Chat provides a clean and intuitive interface for real-time messaging with support for multiple chat sessions!
 
 ## Features
 
