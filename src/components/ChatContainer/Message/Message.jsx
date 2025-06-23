@@ -1,10 +1,7 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import rehypeSanitize from 'rehype-sanitize';
-import rehypePrism from '@mapbox/rehype-prism';
-import remarkGfm from 'remark-gfm';
 import { FaUser } from 'react-icons/fa';
-import { MARKDOWN_COMPONENTS } from '../constants/markdownComponents';
+import { MARKDOWN_COMPONENTS, MARKDOWN_PLUGINS } from '../constants/markdownComponents';
 import './Message.css';
 
 const Message = ({ message, isStreaming = false, isLast = false }) => {
@@ -41,9 +38,10 @@ const Message = ({ message, isStreaming = false, isLast = false }) => {
           ) : (
             <>
               <ReactMarkdown
-                rehypePlugins={[rehypeSanitize, rehypePrism]}
-                remarkPlugins={[remarkGfm]}
+                remarkPlugins={MARKDOWN_PLUGINS.remark}
+                rehypePlugins={MARKDOWN_PLUGINS.rehype}
                 components={MARKDOWN_COMPONENTS}
+                skipHtml={true}
               >
                 {message.content}
               </ReactMarkdown>
