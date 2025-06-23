@@ -3,7 +3,7 @@
 singleImageBuild(
     repo: 'https://github.com/petedillo/ollama-chat',
     registry: 'diolab:5000',
-    host: 'clientpi',
+    host: '192.168.0.43',
     sshCreds: 'pi-ssh-key',
     composePath: '/services/ollama/compose.yaml',
     imageName: 'ollama-chat',
