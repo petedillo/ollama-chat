@@ -9,5 +9,6 @@ singleImageBuild(
     imageName: 'ollama-chat',
     branch: 'main',
     buildArgs: [VITE_API_BASE_URL: 'http://192.168.0.18:3000'],
-    contextPath: '.'
+    contextPath: '.',
+    platform: 'linux/arm64'
 )
