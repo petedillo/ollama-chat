@@ -10,5 +10,6 @@ singleImageBuild(
     branch: 'main',
     buildArgs: [VITE_API_BASE_URL: 'http://192.168.0.18:3000'],
     contextPath: '.',
-    platform: 'linux/arm64'
+    platforms: ['linux/amd64', 'linux/arm64'],
+push: true
 )
