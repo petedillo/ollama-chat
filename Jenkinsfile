@@ -4,7 +4,7 @@ singleImageBuild(
     repo: 'https://github.com/petedillo/ollama-chat',
     registry: 'diolab:5000',
     host: '192.168.0.43',
-    sshCreds: 'pi-ssh-key',
+    sshCreds: 'jenkins-petedillo',
     composePath: '/services/ollama/compose.yaml',
     imageName: 'ollama-chat',
     branch: 'main',
