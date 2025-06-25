@@ -6,10 +6,10 @@ singleImageBuild(
     host: '192.168.0.43',
     sshCreds: 'jenkins-petedillo',
     composePath: '/home/pete/services/ollama/compose.yaml',
-    imageName: 'ollama-chat',
+    imageName: 'ollama-frontend',
     branch: 'main',
     buildArgs: [VITE_API_BASE_URL: 'http://192.168.0.18:3000'],
     contextPath: '.',
     platform: 'linux/arm64',
-    push: true  
+    push: true
 )
