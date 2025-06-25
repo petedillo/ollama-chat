@@ -1,5 +1,5 @@
 # Build stage
-FROM --platform=$BUILDPLATFORM node:22-alpine AS build
+FROM node:22-alpine AS build
 
 # Set working directory
 WORKDIR /app
@@ -23,7 +23,7 @@ ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 RUN npm run build
 
 # Production stage
-FROM --platform=$TARGETPLATFORM nginx:alpine
+FROM nginx:alpine
 
 # Remove default nginx static assets
 RUN rm -rf /usr/share/nginx/html/*
