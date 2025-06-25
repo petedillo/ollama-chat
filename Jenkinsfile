@@ -5,7 +5,7 @@ singleImageBuild(
     registry: 'diolab:5000',
     host: '192.168.0.43',
     sshCreds: 'jenkins-petedillo',
-    composePath: '/services/ollama/compose.yaml',
+    composePath: '/home/pete/services/ollama/compose.yaml',
     imageName: 'ollama-chat',
     branch: 'main',
     buildArgs: [VITE_API_BASE_URL: 'http://192.168.0.18:3000'],
