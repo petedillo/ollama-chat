@@ -8,7 +8,7 @@ singleImageBuild(
     repo: 'https://github.com/petedillo/ollama-chat',
     registry: registry,
     host: host,
-    sshCreds: 'jenkins',
+    sshCreds: 'jenkins-petedillo',
     composePath: '/home/pete/services/ollama/compose.yaml',
     imageName: 'ollama-frontend',
     branch: 'main',
