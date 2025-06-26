@@ -1,8 +1,8 @@
 @Library('jenkins-shared-library@main') _
 
-def registry = env.REGISTRY ?: 'diolab:5000'
-def host = env.HOST ?: '192.168.0.43'
-def apiBaseUrl = env.VITE_API_BASE_URL ?: 'http://192.168.0.18:3000'
+def registry = env.REGISTRY 
+def host = env.HOST 
+def apiBaseUrl = env.VITE_API_BASE_URL 
 
 singleImageBuild(
     repo: 'https://github.com/petedillo/ollama-chat',
