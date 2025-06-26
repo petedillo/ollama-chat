@@ -1,8 +1,16 @@
 @Library('jenkins-shared-library@main') _
 
-def registry = env.REGISTRY 
-def host = env.HOST 
-def apiBaseUrl = env.DIOCHAT_BASE_URL 
+properties([
+    parameters([
+        string(name: 'REGISTRY', defaultValue: '', description: 'Docker registry'),
+        string(name: 'HOST', defaultValue: '', description: 'Remote host'),
+        string(name: 'DIOCHAT_BASE_URL', defaultValue: '', description: 'Base URL for the API')
+    ])
+])
+
+def registry = params.REGISTRY
+def host = params.HOST
+def apiBaseUrl = params.DIOCHAT_BASE_URL
 
 singleImageBuild(
     repo: 'https://github.com/petedillo/ollama-chat',
