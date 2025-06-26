@@ -1,5 +1,8 @@
 
 import { CodeBlock } from '../CodeBlock/CodeBlock';
+import rehypeSanitize from 'rehype-sanitize';
+import rehypePrism from '@mapbox/rehype-prism';
+import remarkGfm from 'remark-gfm';
 
 export const MARKDOWN_COMPONENTS = {
   code({ node, inline, className, children, ...props }) {
