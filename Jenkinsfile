@@ -8,19 +8,15 @@ properties([
     ])
 ])
 
-def registry = params.REGISTRY
-def host = params.HOST
-def apiBaseUrl = params.DIOCHAT_BASE_URL
-
 singleImageBuild(
     repo: 'https://github.com/petedillo/ollama-chat',
-    registry: registry,
-    host: host,
+    registry: params.REGISTRY,
+    host: params.HOST,
     sshCreds: 'jenkins-petedillo',
     composePath: '/home/pete/services/ollama/compose.yaml',
     imageName: 'ollama-frontend',
     branch: 'main',
-    buildArgs: [VITE_API_BASE_URL: apiBaseUrl],
+    buildArgs: [VITE_API_BASE_URL: params.DIOCHAT_BASE_URL],
     contextPath: '.',
     platform: 'linux/arm64',
     push: true
