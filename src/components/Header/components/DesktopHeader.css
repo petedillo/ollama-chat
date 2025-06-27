@@ -1,0 +1,87 @@
+.desktop-header {
+  background: var(--glass-bg-primary);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  color: var(--color-text-primary);
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between; /* This pushes children to the edges */
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-appbar);
+  height: 60px;
+  border-bottom: 1px solid var(--glass-border);
+  max-width: 100%;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.desktop-header-left {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 1rem;
+  flex-shrink: 0;
+}
+
+.desktop-header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  padding-right: 1rem;
+  max-width: 65%;
+  flex: 1;
+  min-width: 0;
+}
+
+.desktop-app-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  white-space: nowrap;
+  color: var(--color-primary-main);
+  text-shadow: 0 0 15px rgba(var(--color-primary-rgb), 0.4);
+  transition: all 0.3s ease;
+  line-height: 1;
+}
+
+.desktop-chat-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--color-text-primary);
+  opacity: 0.9;
+  line-height: 1;
+  max-width: 100%;
+  text-align: right;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 0.1rem;
+}
+
+.desktop-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Hover effects for desktop */
+@media (hover: hover) and (min-width: 1024px) {
+  .desktop-app-title:hover {
+    text-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.6);
+    transform: translateY(-1px);
+  }
+  
+  .desktop-chat-title:hover {
+    color: var(--color-primary-light);
+  }
+}
