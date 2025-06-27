@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { useState, useEffect, useRef } from 'react';
+import { FiEdit2, FiTrash2, FiMessageSquare } from 'react-icons/fi';
 import { DeleteConfirmation } from '../DeleteConfirmation/DeleteConfirmation';
 import { EditChatForm } from '../EditChatForm/EditChatForm';
 import './ChatItem.css';
@@ -25,6 +25,10 @@ export const ChatItem = ({
   const handleClick = (e) => {
     e.stopPropagation();
     onSelect(chat.id);
+    // Close any open dialogs when clicking on a chat item
+    if (isEditing || isDeleting) {
+      onCancel();
+    }
   };
 
   const handleDeleteClick = (e) => {
@@ -62,8 +66,20 @@ export const ChatItem = ({
     });
   };
 
-  // Maintain consistent height for all states
-  const contentHeight = '60px';
+  // Refs for handling focus and animations
+  const itemRef = useRef(null);
+  const wasCollapsed = useRef(isCollapsed);
+  
+  // Handle animation when expanding/collapsing
+  useEffect(() => {
+    if (wasCollapsed.current !== isCollapsed && itemRef.current) {
+      // Trigger reflow for animation
+      itemRef.current.style.transition = 'none';
+      void itemRef.current.offsetHeight; // Force reflow
+      itemRef.current.style.transition = '';
+    }
+    wasCollapsed.current = isCollapsed;
+  }, [isCollapsed]);
 
   if (isEditing && !isCollapsed) {
     return (
@@ -86,52 +102,70 @@ export const ChatItem = ({
 
   const avatarText = chat.title ? chat.title.charAt(0).toUpperCase() : 'C';
   const showActions = isHovered && !isCollapsed && !isEditing && !isDeleting;
-  const messagePreview = chat?.messages?.[0]?.content?.substring(0, 30) || '';
+  const messagePreview = chat?.messages?.[0]?.content?.replace(/[^\w\s]/gi, '').substring(0, 30) || '';
   const isCurrentChat = chat.id === currentChatId;
+  const lastMessageTime = chat.updatedAt ? new Date(chat.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
 
   return (
     <li
+      ref={itemRef}
       className={`chat-item ${isCurrentChat ? 'active' : ''} ${isCollapsed ? 'collapsed' : ''}`}
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       title={isCollapsed ? chat.title || 'Untitled Chat' : undefined}
+      data-testid={`chat-item-${chat.id}`}
     >
-      <div className="chat-item-avatar">
-        {avatarText}
+      <div className="chat-item-avatar" data-active={isCurrentChat}>
+        {isCollapsed ? (
+          <FiMessageSquare className="chat-icon" />
+        ) : (
+          <span>{avatarText}</span>
+        )}
       </div>
       
-      {!isCollapsed && (
+      {!isCollapsed ? (
         <div className="chat-item-content">
-          <div className="chat-item-title">
-            {chat.title || 'Untitled Chat'}
+          <div className="chat-item-header">
+            <h3 className="chat-item-title" title={chat.title || 'Untitled Chat'}>
+              {chat.title || 'New Chat'}
+            </h3>
           </div>
           {messagePreview && (
-            <div className="chat-item-preview">
-              {messagePreview}
-            </div>
+            <p className="chat-item-preview">
+              {messagePreview}{messagePreview.length === 30 ? '...' : ''}
+            </p>
           )}
         </div>
+      ) : (
+        <div className="chat-item-tooltip">
+          {chat.title || 'New Chat'}
+          {lastMessageTime && <span className="tooltip-time">{lastMessageTime}</span>}
+        </div>
       )}
-
+      
       {showActions && (
         <div className="chat-item-actions">
           <button
-            className="edit"
+            className="chat-item-edit"
             onClick={handleEditClick}
             aria-label="Edit chat title"
+            data-testid="edit-chat-button"
           >
             <FiEdit2 size={16} />
           </button>
           <button
-            className="delete"
+            className="chat-item-delete"
             onClick={handleDeleteClick}
             aria-label="Delete chat"
+            data-testid="delete-chat-button"
           >
             <FiTrash2 size={16} />
           </button>
         </div>
       )}
+      
+      {isCurrentChat && !isCollapsed && <div className="active-indicator"></div>}
     </li>
   );
 };

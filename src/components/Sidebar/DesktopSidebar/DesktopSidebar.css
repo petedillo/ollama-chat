@@ -1,0 +1,367 @@
+/* Container for the desktop sidebar */
+.desktop-sidebar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+}
+
+/* Toggle Button - DIO Design System */
+.sidebar-toggle-btn {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 247, 255, 0.3);
+  color: #00f7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: auto;
+}
+
+/* Custom SVG arrow styling */
+.toggle-arrow {
+  width: 24px;
+  height: 24px;
+  color: #00f7ff;
+  transition: transform 0.2s ease;
+  filter: drop-shadow(0 0 2px rgba(0, 247, 255, 0.8));
+}
+
+.sidebar-toggle-btn:hover .toggle-arrow {
+  color: #00ffff;
+  filter: drop-shadow(0 0 4px rgba(0, 255, 255, 1));
+  transform: scale(1.1);
+}
+
+
+
+.sidebar-toggle-btn:hover {
+  background: rgba(0, 247, 255, 0.1);
+  color: #00f7ff;
+  box-shadow: 0 0 15px rgba(0, 247, 255, 0.8);
+  box-shadow: var(--shadow-button-hover);
+  transform: translateY(-2px);
+}
+
+.sidebar-toggle-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+  background: rgba(0, 247, 255, 0.2);
+}
+
+.sidebar-toggle-btn svg {
+  filter: drop-shadow(0 0 5px rgba(0, 247, 255, 0.5));
+  transition: transform 0.2s ease;
+}
+
+.sidebar-toggle-btn:hover svg {
+  filter: drop-shadow(0 0 8px rgba(0, 247, 255, 0.8));
+}
+
+/* Sidebar */
+.desktop-sidebar {
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 0;
+  --transition-speed: 0.3s;
+  
+  width: var(--sidebar-width);
+  height: 100vh;
+  position: relative;
+  background-color: var(--color-bg-overlay);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-right: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-glass);
+  color: var(--color-text-primary);
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  will-change: transform;
+  transform: translateX(0);
+  pointer-events: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.desktop-sidebar.collapsed {
+  transform: translateX(-100%);
+  width: var(--sidebar-width);
+  transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hide content when collapsed */
+.desktop-sidebar.collapsed .sidebar-content,
+.desktop-sidebar.collapsed .sidebar-header,
+.desktop-sidebar.collapsed .sidebar-footer {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s ease;
+}
+
+/* Show toggle button icon when collapsed */
+.desktop-sidebar.collapsed .sidebar-toggle-icon {
+  opacity: 1;
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  .desktop-sidebar {
+    transform: translateX(0);
+    width: 280px;
+  }
+  
+  .desktop-sidebar.collapsed {
+    transform: translateX(-100%);
+    width: 0;
+  }
+  
+  .desktop-sidebar.collapsed .sidebar-content,
+  .desktop-sidebar.collapsed .sidebar-header,
+  .desktop-sidebar.collapsed .sidebar-footer {
+    display: none;
+  }
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(0, 247, 255, 0.1);
+  min-height: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-left: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sidebar-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #00f7ff;
+  text-shadow: 0 0 8px rgba(0, 247, 255, 0.5);
+  letter-spacing: 0.5px;
+  transition: all var(--transition-speed) ease;
+  text-align: right;
+  flex: 1;
+}
+
+/* Adjust toggle button in collapsed state */
+.desktop-sidebar.collapsed .sidebar-toggle-btn {
+  margin: 0 auto;
+}
+
+/* Show title on hover in collapsed state */
+.desktop-sidebar.collapsed.hovered .sidebar-title {
+  display: block;
+  opacity: 1;
+  margin-left: 0;
+  padding: 0 0.5rem;
+}
+
+.desktop-sidebar.collapsed .sidebar-title {
+  display: none;
+  opacity: 0;
+  width: 0;
+  margin-left: 0;
+  transition: none;
+}
+
+.sidebar-content {
+  flex-grow: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+.new-chat-button {
+  --button-padding: 0.85rem 1.25rem;
+  --button-margin: 0 0 1.25rem 0;
+  --button-gap: 0.65rem;
+  margin-left: 0 !important;
+  --button-radius: 8px;
+  --button-border: 1px solid rgba(0, 247, 255, 0.3);
+  
+  background: rgba(0, 0, 0, 0.2);
+  color: #00f7ff;
+  border: var(--button-border);
+  border-radius: var(--button-radius);
+  padding: var(--button-padding);
+  margin: var(--button-margin);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--button-gap);
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  text-shadow: 0 0 8px rgba(0, 247, 255, 0.7);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  will-change: transform, box-shadow, border-color;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.new-chat-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    transparent,
+    transparent,
+    rgba(0, 247, 255, 0.1),
+    transparent,
+    transparent
+  );
+  transform: rotate(30deg);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.new-chat-button:hover {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: #00f7ff;
+  box-shadow: 0 8px 25px rgba(0, 247, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.new-chat-button:hover::before {
+  left: 100%;
+}
+
+.new-chat-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.new-chat-button svg {
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 0 2px rgba(0, 247, 255, 0.8));
+}
+
+.chat-list-container {
+  flex: 1;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+
+/* Collapsed state styles */
+.desktop-sidebar.collapsed .new-chat-button span {
+  display: none;
+}
+
+.desktop-sidebar.collapsed .new-chat-button {
+  --button-padding: 0;
+  --button-margin: 0 auto 1.25rem;
+  --button-gap: 0;
+  --button-radius: 50%;
+  --button-border: 1px solid rgba(0, 247, 255, 0.15);
+  
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  box-shadow: 0 2px 8px rgba(0, 247, 255, 0.1);
+}
+
+/* Show button text on hover in collapsed state */
+.desktop-sidebar.collapsed.hovered .new-chat-button span {
+  display: inline;
+  margin-left: 0.5rem;
+  opacity: 1;
+  transition: opacity 0.2s ease 0.1s;
+}
+
+/* Style for the sidebar footer */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 1rem;
+  border-top: 1px solid rgba(0, 247, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+/* Smooth transitions for collapsed/expanded states */
+.desktop-sidebar,
+.desktop-sidebar * {
+  transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Collapsed state styles */
+.desktop-sidebar.collapsed .desktop-sidebar-title,
+.desktop-sidebar.collapsed .desktop-new-chat-button span {
+  display: none;
+}
+
+.desktop-sidebar.collapsed .desktop-new-chat-button {
+  justify-content: center;
+  padding: 0.75rem;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+}
+
+/* Scrollbar styles */
+.sidebar-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}

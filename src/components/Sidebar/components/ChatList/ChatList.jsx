@@ -1,6 +1,6 @@
-import React, { useState, useEffect, memo, useCallback } from 'react';
+import React, { useState, useEffect, memo, useCallback, useRef } from 'react';
 import { ChatItem } from '../ChatItem/ChatItem';
-import { FiChevronDown, FiChevronUp, FiMessageSquare, FiLoader } from 'react-icons/fi';
+import { FiMessageSquare, FiLoader } from 'react-icons/fi';
 import './ChatList.css';
 
 export const ChatList = memo(({ 
@@ -10,8 +10,7 @@ export const ChatList = memo(({
   onChatSelect, 
   onChatEdit, 
   onChatDelete,
-  isCollapsed = false,
-  onToggleCollapse
+  isCollapsed = false
 }) => {
   const [editingChatId, setEditingChatId] = useState(null);
   const [deletingChatId, setDeletingChatId] = useState(null);
@@ -60,11 +59,6 @@ export const ChatList = memo(({
     setDeletingChatId(null);
   };
 
-  const handleToggleCollapse = useCallback((e) => {
-    e?.stopPropagation();
-    onToggleCollapse?.(e);
-  }, [onToggleCollapse]);
-
   // Reset editing and deleting states when collapsing/expanding
   useEffect(() => {
     if (isCollapsed) {
@@ -72,46 +66,57 @@ export const ChatList = memo(({
       setDeletingChatId(null);
     }
   }, [isCollapsed]);
+  
+  // Auto-focus the edit input when editing starts
+  const editInputRef = useRef(null);
+  useEffect(() => {
+    if (editingChatId && editInputRef.current) {
+      editInputRef.current.focus();
+      editInputRef.current.select();
+    }
+  }, [editingChatId]);
 
   return (
     <div className={`chat-list ${isCollapsed ? 'collapsed' : ''}`}>
-    {loading ? (
-      <div className="loading-indicator">
-        {isCollapsed ? <FiLoader className="loading-icon" /> : 'Loading chats...'}
-      </div>
-    ) : chats.length === 0 ? (
-      <div className="empty-state">
-        <FiMessageSquare className="empty-state-icon" />
-        {!isCollapsed && (
-          <>
-            <p className="empty-state-title">No Chats Yet</p>
-            <p className="empty-state-text">Click "New Chat" to start a conversation.</p>
-          </>
-        )}
-      </div>
-    ) : (
-      <div className="chat-items">
-        {chats.map((chat) => (
-          <ChatItem
-            key={chat.id}
-            chat={chat}
-            currentChatId={currentChatId}
-            isActive={chat.id === currentChatId}
-            isEditing={editingChatId === chat.id}
-            isDeleting={deletingChatId === chat.id}
-            onSelect={onChatSelect}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            onConfirmDelete={handleConfirmDelete}
-            onUpdateTitle={handleUpdateTitle}
-            onCancel={handleCancel}
-            isCollapsed={isCollapsed}
-            editTitle={editTitle}
-            onEditTitleChange={(e) => setEditTitle(e.target.value)}
-          />
-        ))}
-      </div>
-    )}
-  </div>
+      {loading ? (
+        <div className="loading-indicator">
+          <FiLoader className="loading-icon" />
+          {!isCollapsed && <span>Loading chats...</span>}
+        </div>
+      ) : chats.length === 0 ? (
+        <div className="empty-state">
+          <FiMessageSquare className="empty-state-icon" />
+          {!isCollapsed && (
+            <>
+              <p className="empty-state-title">No Chats Yet</p>
+              <p className="empty-state-text">Start a new conversation</p>
+            </>
+          )}
+        </div>
+      ) : (
+        <div className="chat-items">
+          {chats.map((chat) => (
+            <ChatItem
+              key={chat.id}
+              chat={chat}
+              currentChatId={currentChatId}
+              isActive={chat.id === currentChatId}
+              isEditing={editingChatId === chat.id}
+              isDeleting={deletingChatId === chat.id}
+              onSelect={onChatSelect}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              onConfirmDelete={handleConfirmDelete}
+              onUpdateTitle={handleUpdateTitle}
+              onCancel={handleCancel}
+              isCollapsed={isCollapsed}
+              editTitle={editTitle}
+              onEditTitleChange={(e) => setEditTitle(e.target.value)}
+              editInputRef={editingChatId === chat.id ? editInputRef : null}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 });

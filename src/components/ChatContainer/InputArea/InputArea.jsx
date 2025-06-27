@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './InputArea.css';
 import { FaPaperPlane, FaSpinner } from 'react-icons/fa';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 const InputArea = ({
   messageInput,
@@ -11,58 +12,84 @@ const InputArea = ({
   loading,
   currentChat
 }) => {
-  // Focus the textarea when chat changes or loading state changes
+  const formRef = useRef(null);
+  const isComposing = useRef(false);
+
+  // Auto-resize textarea based on content
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${Math.min(
+        textareaRef.current.scrollHeight,
+        200
+      )}px`;
+      textareaRef.current.style.overflowY = 
+        textareaRef.current.scrollHeight > 200 ? 'auto' : 'hidden';
+    }
+  };
+  // Focus and adjust textarea on changes
   useEffect(() => {
     if (!loading && textareaRef.current) {
       textareaRef.current.focus();
+      adjustTextareaHeight();
     }
   }, [loading, currentChat?.id]);
 
-  // Handle keyboard shortcuts
+  // Adjust height when message changes
   useEffect(() => {
-    const handleGlobalKeyDown = (e) => {
-      // Focus the textarea when pressing / (but not when in an input or textarea)
-      if (e.key === '/' && 
-          document.activeElement?.tagName !== 'INPUT' && 
-          document.activeElement?.tagName !== 'TEXTAREA') {
-        e.preventDefault();
-        if (textareaRef.current) {
-          textareaRef.current.focus();
-        }
-      }
-      // Submit form with Cmd+Enter or Ctrl+Enter
-      else if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-        if (messageInput.trim()) {
-          handleSendMessage(e);
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleGlobalKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleGlobalKeyDown);
-    };
+    adjustTextareaHeight();
   }, [messageInput]);
+
+  // Handle keyboard shortcuts
+  // Handle keyboard shortcuts with react-hotkeys-hook
+  useHotkeys('ctrl+enter, cmd+enter', (e) => {
+    if (messageInput.trim() && !isComposing.current) {
+      e.preventDefault();
+      formRef.current.requestSubmit();
+    }
+  }, { enableOnFormTags: true }, [messageInput]);
+
+  useHotkeys('ctrl+k, cmd+k', (e) => {
+    if (document.activeElement?.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      textareaRef.current?.focus();
+    }
+  }, { enableOnFormTags: true });
+
+  const handleComposition = (e) => {
+    isComposing.current = e.type === 'compositionstart';
+  };
 
   return (
     <form 
-      className="input-container" 
-      onSubmit={handleSendMessage} 
+      ref={formRef}
+      className="input-form" 
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!isComposing.current) {
+          handleSendMessage(e);
+        }
+      }}
       autoComplete="off"
     >
-      <div className={`input-wrapper ${loading ? 'loading' : ''}`}>
+      <div className={`input-container ${loading ? 'loading' : ''}`}>
         <textarea
           ref={textareaRef}
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Type a message..."
+          onCompositionStart={handleComposition}
+          onCompositionEnd={handleComposition}
+          placeholder="Message..."
           disabled={loading || !currentChat}
           className="message-input"
           rows="1"
           autoComplete="off"
           spellCheck="true"
           aria-label="Message input"
+          style={{
+            overflowY: 'auto'
+          }}
         />
         <button
           type="submit"
@@ -70,6 +97,9 @@ const InputArea = ({
           className="send-button"
           aria-label={loading ? 'Sending...' : 'Send message'}
           aria-busy={loading}
+          style={{
+            opacity: (loading || !messageInput.trim() || !currentChat) ? 0.6 : 1
+          }}
         >
           {loading ? (
             <FaSpinner className="spinner" />
@@ -80,7 +110,7 @@ const InputArea = ({
       </div>
       <div className="input-hints">
         <span className="hint">Shift + Enter for new line</span>
-        <span className="hint">Ctrl + Enter to send</span>
+        <span className="hint">Ctrl + K to focus input</span>
       </div>
     </form>
   );

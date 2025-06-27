@@ -1,0 +1,170 @@
+/* Main Layout Container */
+:root {
+  --header-height: 60px; /* Fixed height to match sidebar header */
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 0px;
+  --transition-speed: 0.3s;
+  --sidebar-z-index: 100;
+  --header-z-index: 90;
+  --toggle-z-index: 1000;
+}
+
+/* Base Layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-bg-default);
+}
+
+/* Main Content Area */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-bg-default);
+}
+
+/* Content Wrapper */
+.content-wrapper {
+  display: flex;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  margin-top: 0;
+  padding-top: var(--header-height);
+}
+
+/* Chat Area */
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--color-bg-default);
+  padding: 0;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  transition: margin-left var(--transition-speed) ease;
+  margin-left: 280px; /* Match sidebar width */
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  padding-top: 1rem; /* Keep only top padding */
+}
+
+/* When sidebar is collapsed */
+.sidebar-collapsed .chat-area {
+  margin-left: 0;
+}
+
+/* Mobile Sidebar Overlay */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.open {
+  display: block;
+  opacity: 1;
+}
+
+/* Desktop Header */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  min-height: var(--header-height);
+  background: transparent; /* Let the desktop header handle the background */
+  z-index: var(--header-z-index);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0;
+  pointer-events: none; /* Allow clicks to pass through to the desktop header */
+}
+
+/* Adjust chat title in header */
+.desktop-chat-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Mobile Overlay */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-speed) ease, 
+              visibility var(--transition-speed) ease;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.sidebar-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767px) {
+  .main-content {
+    margin-left: 0 !important;
+  }
+  
+  .chat-area {
+    padding: 0.5rem;
+  }
+  
+  .sidebar-overlay {
+    top: 0;
+    z-index: 999;
+  }
+}
+
+/* Animation for sidebar transitions */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
