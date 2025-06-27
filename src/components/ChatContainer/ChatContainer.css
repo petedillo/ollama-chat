@@ -27,13 +27,16 @@
   .chat-container {
     width: 100%;
     padding: 0 1rem;
-    height: auto;
-    position: static;
-    transform: none;
+    height: 100%;
+    position: relative;
+    padding-bottom: 120px; /* Space for the fixed input */
   }
   
   .messages-wrapper {
-    padding: 1rem 0;
+    padding: 1rem 0 2rem;
+    max-height: calc(100vh - 200px); /* Adjust based on header and input height */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 

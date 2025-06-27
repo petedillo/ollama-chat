@@ -14,26 +14,60 @@ export const MainLayout = () => {
   const currentChat = chatSessions?.find(chat => chat.id === currentChatId);
   const currentChatTitle = currentChat?.title;
 
+  // Handle viewport changes and reset sidebar states accordingly
   useEffect(() => {
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
       const small = window.innerWidth < 480;
-      setIsMobile(mobile);
+      const wasMobile = isMobile;
+      
+      // Always update screen size states
       setIsSmallScreen(small);
       
-      if (!mobile && sidebarOpen) {
-        setSidebarOpen(false);
-        document.body.classList.remove('sidebar-open');
+      // Only proceed with mobile state changes if it's different
+      if (mobile !== wasMobile) {
+        if (mobile) {
+          // Switching to mobile view
+          setIsMobile(true);
+          setSidebarOpen(false);
+          document.body.classList.remove('sidebar-open');
+        } else {
+          // Switching to desktop view
+          setIsMobile(false);
+          setSidebarOpen(false);
+          document.body.classList.remove('sidebar-open');
+          // Always expand the sidebar when switching to desktop
+          setIsSidebarCollapsed(false);
+        }
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    // Throttle the resize handler to prevent excessive updates
+    let resizeTimeout;
+    const throttledResize = () => {
+      if (!resizeTimeout) {
+        resizeTimeout = setTimeout(() => {
+          resizeTimeout = null;
+          handleResize();
+        }, 100);
+      }
+    };
+
+    window.addEventListener('resize', throttledResize);
+    // Initial check
     handleResize();
-    return () => window.removeEventListener('resize', handleResize);
-  }, [sidebarOpen]);
+    
+    return () => {
+      window.removeEventListener('resize', throttledResize);
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+      }
+    };
+  }, [isMobile, isSidebarCollapsed]);
 
   const toggleSidebar = (collapsed) => {
     if (isMobile) {
+      // For mobile, just toggle the open state
       const newState = !sidebarOpen;
       setSidebarOpen(newState);
       if (newState) {
@@ -41,10 +75,10 @@ export const MainLayout = () => {
       } else {
         document.body.classList.remove('sidebar-open');
       }
-    } else if (collapsed !== undefined) {
-      setIsSidebarCollapsed(collapsed);
     } else {
-      setIsSidebarCollapsed(!isSidebarCollapsed);
+      // For desktop, handle collapse/expand
+      const newState = collapsed !== undefined ? collapsed : !isSidebarCollapsed;
+      setIsSidebarCollapsed(newState);
     }
   };
 
