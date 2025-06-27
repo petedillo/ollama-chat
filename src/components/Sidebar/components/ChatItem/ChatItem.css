@@ -220,9 +220,11 @@
 
 .chat-item-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   margin-bottom: 2px;
+  position: relative;
+  padding-right: 40px; /* Space for action buttons */
 }
 
 .chat-item-title {
@@ -233,16 +235,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   color: inherit;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  max-width: 100%;
+  display: inline-block;
 }
 
-.chat-item-time {
-  font-size: 0.75rem;
-  color: var(--chat-item-text-muted);
-  margin-left: 8px;
-  flex-shrink: 0;
-  transition: color 0.2s ease;
-}
+/* Time display removed from chat item */
 
 .chat-item-preview {
   font-size: 0.85rem;
@@ -264,10 +262,8 @@
   display: flex;
   gap: 4px;
   opacity: 0;
-  transform: translateX(10px);
-  transition: all 0.2s ease;
   position: absolute;
-  right: 8px;
+  right: 0;
   top: 50%;
   transform: translateY(-50%) translateX(10px);
   background: rgba(0, 0, 0, 0.6);
@@ -277,6 +273,8 @@
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  z-index: 2;
 }
 
 .chat-item:hover .chat-item-actions,

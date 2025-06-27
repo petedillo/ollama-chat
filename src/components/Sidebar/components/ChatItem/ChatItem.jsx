@@ -130,9 +130,6 @@ export const ChatItem = ({
             <h3 className="chat-item-title" title={chat.title || 'Untitled Chat'}>
               {chat.title || 'New Chat'}
             </h3>
-            <span className="chat-item-time" title={formatDate(chat.updatedAt)}>
-              {lastMessageTime}
-            </span>
           </div>
           {messagePreview && (
             <p className="chat-item-preview">
