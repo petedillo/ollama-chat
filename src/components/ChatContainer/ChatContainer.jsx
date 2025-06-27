@@ -18,13 +18,15 @@ export const ChatContainer = () => {
 
   return (
     <div className="chat-container">
-      {error && <ErrorMessage error={error} onDismiss={clearError} />}
-      
-      <MessagesContainer 
-        messages={currentChat?.messages || []} 
-        loading={loading} 
-        currentChat={currentChat} 
-      />
+      <div className="messages-wrapper">
+        {error && <ErrorMessage error={error} onDismiss={clearError} />}
+        
+        <MessagesContainer 
+          messages={currentChat?.messages || []} 
+          loading={loading} 
+          currentChat={currentChat} 
+        />
+      </div>
       
       <InputArea
         messageInput={messageInput}

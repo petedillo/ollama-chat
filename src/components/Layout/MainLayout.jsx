@@ -64,7 +64,7 @@ export const MainLayout = () => {
         onMenuClick={toggleSidebar}
       />
       
-      <div className="main-content">
+      <div className={`main-content ${isSidebarCollapsed ? 'sidebar-collapsed' : ''} ${sidebarOpen ? 'sidebar-open' : ''}`}>
         <Sidebar 
           isCollapsed={isSidebarCollapsed} 
           isMobile={isMobile}
@@ -81,7 +81,7 @@ export const MainLayout = () => {
           />
         )}
         
-        <div className={`chat-area ${isMobile ? 'mobile' : ''} ${sidebarOpen ? 'sidebar-open' : ''}`} onClick={closeMobileSidebar}>
+        <div className="chat-area" onClick={closeMobileSidebar}>
           <ChatContainer />
         </div>
       </div>
