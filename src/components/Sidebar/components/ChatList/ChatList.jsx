@@ -1,6 +1,6 @@
 import React, { useState, useEffect, memo, useCallback } from 'react';
 import { ChatItem } from '../ChatItem/ChatItem';
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp, FiMessageSquare } from 'react-icons/fi';
 import './ChatList.css';
 
 export const ChatList = memo(({ 
@@ -78,7 +78,11 @@ export const ChatList = memo(({
     {loading ? (
       <div className="loading-indicator">Loading chats...</div>
     ) : chats.length === 0 ? (
-      <div className="empty-state">No chats yet</div>
+      <div className="empty-state">
+        <FiMessageSquare className="empty-state-icon" />
+        <p className="empty-state-title">No Chats Yet</p>
+        <p className="empty-state-text">Click the "New Chat" button to start your first conversation.</p>
+      </div>
     ) : (
       <div className="chat-items">
         {chats.map((chat) => (

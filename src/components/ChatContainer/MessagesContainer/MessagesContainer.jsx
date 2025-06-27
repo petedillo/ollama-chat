@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import Message from '../Message/Message';
-import { EmptyState } from '../EmptyState/EmptyState';
+import { Welcome } from '../Welcome/Welcome';
 import './MessagesContainer.css';
 
 const MessagesContainer = ({ messages, loading, currentChat }) => {
@@ -13,12 +13,8 @@ const MessagesContainer = ({ messages, loading, currentChat }) => {
   }, [messages, loading]);
 
   const renderContent = () => {
-    if (!currentChat) {
-      return <EmptyState message="Select a chat from the sidebar or create a new one" />;
-    }
-    
-    if (messages.length === 0) {
-      return <EmptyState message="Type a message below to begin chatting" />;
+    if (!currentChat || messages.length === 0) {
+      return <Welcome />;
     }
 
     return (
