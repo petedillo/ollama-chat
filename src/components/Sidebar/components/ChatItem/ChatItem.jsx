@@ -65,7 +65,7 @@ export const ChatItem = ({
   // Maintain consistent height for all states
   const contentHeight = '60px';
 
-  if (isEditing) {
+  if (isEditing && !isCollapsed) {
     return (
       <EditChatForm
         initialTitle={chat.title}
@@ -75,7 +75,7 @@ export const ChatItem = ({
     );
   }
 
-  if (isDeleting) {
+  if (isDeleting && !isCollapsed) {
     return (
       <DeleteConfirmation
         onConfirm={handleConfirmDeleteClick}

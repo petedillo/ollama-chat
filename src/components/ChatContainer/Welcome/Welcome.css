@@ -11,6 +11,10 @@
   overflow: hidden;
 }
 
+.welcome-container.empty-chat {
+  padding: 1.5rem;
+}
+
 .welcome-content {
   display: flex;
   flex-direction: column;
@@ -18,12 +22,21 @@
   justify-content: center;
   padding: 3rem 4rem;
   border-radius: 20px;
-  background: rgba(28, 28, 40, 0.5); /* var(--background-color-translucent) */
+  background: rgba(28, 28, 40, 0.5);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 255, 255, 0.2); /* var(--accent-color-translucent) */
+  border: 1px solid rgba(0, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.8s ease-out;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.welcome-container.empty-chat .welcome-content {
+  padding: 2.5rem 3rem;
+  background: rgba(25, 25, 45, 0.3);
+  border: 1px solid rgba(0, 247, 255, 0.2);
 }
 
 .welcome-logo {
@@ -36,12 +49,25 @@
   background: rgba(0, 255, 255, 0.1);
   border: 2px solid rgba(0, 255, 255, 0.3);
   margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.welcome-container.empty-chat .welcome-logo {
+  width: 70px;
+  height: 70px;
+  background: rgba(0, 200, 255, 0.1);
+  border-color: rgba(0, 200, 255, 0.25);
 }
 
 .welcome-icon {
   font-size: 3rem;
   color: var(--accent-color, #00ffff);
   text-shadow: 0 0 10px var(--accent-color, #00ffff);
+  transition: all 0.3s ease;
+}
+
+.welcome-container.empty-chat .welcome-icon {
+  font-size: 2.5rem;
 }
 
 .welcome-title {
@@ -52,6 +78,13 @@
   margin: 0 0 0.5rem 0;
   letter-spacing: 2px;
   text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.welcome-container.empty-chat .welcome-title {
+  font-size: 1.8rem;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 0 6px rgba(0, 200, 255, 0.6);
 }
 
 .welcome-subtitle {
@@ -59,15 +92,42 @@
   font-size: 1.2rem;
   font-weight: 500;
   color: var(--text-secondary, #c0c0c0);
-  margin: 0 0 2rem 0;
+  margin: 0 0 1.5rem 0;
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.welcome-container.empty-chat .welcome-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary, #e0e0e0);
   opacity: 0.8;
 }
 
 .welcome-prompt {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--text-secondary, #c0c0c0);
   margin: 0;
+  line-height: 1.6;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.welcome-container.empty-chat .welcome-prompt {
+  color: var(--accent-color, #00ffff);
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.inline-icon {
+  font-size: 1.1em;
+  margin-right: 4px;
+  vertical-align: middle;
 }
 
 @keyframes fadeIn {
@@ -78,5 +138,32 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .welcome-content {
+    padding: 2rem 1.5rem;
+  }
+  
+  .welcome-container.empty-chat .welcome-content {
+    padding: 2rem 1.5rem;
+  }
+  
+  .welcome-title {
+    font-size: 2rem;
+  }
+  
+  .welcome-container.empty-chat .welcome-title {
+    font-size: 1.5rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .welcome-prompt {
+    font-size: 1rem;
   }
 }

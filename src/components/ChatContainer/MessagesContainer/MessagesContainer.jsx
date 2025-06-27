@@ -13,8 +13,12 @@ const MessagesContainer = ({ messages, loading, currentChat }) => {
   }, [messages, loading]);
 
   const renderContent = () => {
-    if (!currentChat || messages.length === 0) {
-      return <Welcome />;
+    if (!currentChat) {
+      return <Welcome type="welcome" />;
+    }
+    
+    if (messages.length === 0) {
+      return <Welcome type="empty-chat" />;
     }
 
     return (
