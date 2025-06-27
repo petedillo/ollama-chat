@@ -75,8 +75,7 @@
   resize: none;
   max-height: 200px;
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-border) transparent;
+
   margin: 0;
   font-family: inherit;
   outline: none;
@@ -90,20 +89,6 @@
 .message-input::placeholder {
   color: var(--color-text-tertiary);
   opacity: 0.8;
-}
-
-/* Custom scrollbar for textarea */
-.message-input::-webkit-scrollbar {
-  width: 6px;
-}
-
-.message-input::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.message-input::-webkit-scrollbar-thumb {
-  background-color: var(--color-border);
-  border-radius: 3px;
 }
 
 .send-button {

@@ -1,8 +1,11 @@
-import { FiPlus } from 'react-icons/fi';
+import { FiPlus, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 import { ChatList } from './components/ChatList/ChatList';
 import { useChatContext } from '../../context/ChatContext';
 import './Sidebar.css';
-export const Sidebar = () => {
+
+
+
+export const Sidebar = ({ isCollapsed, onToggle }) => {
   const { 
     chatSessions, 
     currentChatId, 
@@ -49,34 +52,37 @@ export const Sidebar = () => {
 
 
 
+
+
   return (
-    <>
-      <div 
-        className="sidebar"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-header">
-          <button 
-            className="new-chat-button" 
-            onClick={handleCreateNewChat}
-            disabled={loading}
-            aria-label="New Chat"
-          >
-            <FiPlus className="new-chat-icon" />
-            <span className="button-text">New Chat</span>
+          {!isCollapsed && <h1 className="sidebar-title">Ollama Chat</h1>}
+          <button className="toggle-btn" onClick={onToggle}>
+            {isCollapsed ? <FiChevronsRight /> : <FiChevronsLeft />}
           </button>
         </div>
-        <div className="chat-list-container">
-          <ChatList 
-            chats={chatsToShow}
-            currentChatId={currentChatId}
-            loading={loading}
-            onChatSelect={handleChatSelect}
-            onChatEdit={handleChatEdit}
-            onChatDelete={handleChatDelete}
-          />
+        <div className="sidebar-content">
+          <button 
+            className="new-chat-button" 
+            onClick={handleCreateNewChat} 
+            disabled={loading}
+          >
+            <FiPlus />
+            {!isCollapsed && <span>New Chat</span>}
+          </button>
+          <div className="chat-list-container">
+            <ChatList 
+              chats={chatsToShow}
+              currentChatId={currentChatId}
+              loading={loading}
+              onChatSelect={handleChatSelect}
+              onChatEdit={handleChatEdit}
+              onChatDelete={handleChatDelete}
+              isCollapsed={isCollapsed}
+            />
+          </div>
         </div>
       </div>
-    </>
   );
 };

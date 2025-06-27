@@ -1,14 +1,13 @@
 
 /* Reset and Base Styles */
 
-
 html,
 body,
 #root,
 .app-layout {
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */ /* Removed to allow scrollbars */
 }
 
 html {
@@ -18,15 +17,22 @@ html {
 }
 
 
+
 /* Main App Layout */
 .app-layout {
   display: grid;
-  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-columns: 280px 1fr;
   grid-template-rows: 0 1fr;
-  transition: grid-template-columns 0.3s var(--transition-timing);
-  background-color: var(--color-bg-primary);
+  transition: grid-template-columns 0.3s ease;
+  background: var(--color-bg-default);
   width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */ /* Removed to allow global scrollbar to appear */
+  min-height: 100vh;
+  background-image: var(--gradient-vista-glow);
+}
+
+.app-layout.sidebar-collapsed {
+  grid-template-columns: 80px 1fr;
 }
 
 /* Header */
@@ -35,20 +41,12 @@ html {
   grid-row: 1;
 }
 
-
-/* Sidebar */
+/* Position the sidebar in the grid */
 .sidebar {
   grid-column: 1;
   grid-row: 1 / -1;
-  background-color: var(--color-bg-secondary);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  position: relative;
-  z-index: 100;
-  overflow: hidden;
-  border-right: 1px solid var(--color-border);
 }
+
 
 /* Main Content */
 .main-container {
@@ -56,36 +54,44 @@ html {
   grid-row: 2;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-bg-primary);
+  background: var(--color-bg-glass);
   position: relative;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow-y: auto; /* Changed to allow vertical scrolling */
+  box-shadow: var(--shadow-glass);
+  border-radius: var(--radius-md);
 }
+
 
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto; /* Allow vertical scrolling for content */
   padding: 0;
   margin: 0;
   height: 100%;
   position: relative;
+  background: var(--color-bg-paper);
+  backdrop-filter: blur(12px);
 }
+
 
 /* Messages Area */
 .messages {
   flex: 1;
   overflow-y: auto;
-  padding: var(--spacing-md);
-  background-color: var(--color-bg-secondary);
-  border-radius: var(--border-radius-md);
-  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-section, 4rem) var(--spacing-unit, 8px);
+  background: var(--color-bg-glass);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-unit, 8px);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-unit, 8px);
+  box-shadow: var(--shadow-glass);
 }
+
 
 .message {
   max-width: 80%;
@@ -170,32 +176,52 @@ html {
 
 input {
   flex: 1;
-  padding: var(--spacing-sm);
-  background-color: var(--color-bg-input);
+  padding: 12px 16px;
+  background: var(--color-bg-glass);
   color: var(--color-text-primary);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-light);
   border-radius: var(--radius-sm);
+  transition: all 0.3s ease;
+  font-family: var(--body1-font);
 }
+input:focus {
+  outline: none;
+  border-color: var(--color-primary-main);
+  box-shadow: 0 0 0 2px rgba(0,247,255,0.2);
+}
+
 
 input::placeholder {
-  color: var(--color-text-tertiary);
+  color: var(--color-text-disabled);
 }
+
 
 button {
-  padding: var(--spacing-sm) var(--spacing-md);
-  background-color: var(--color-accent-primary);
-  color: var(--color-text-primary);
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background-color 0.2s;
+  font-family: var(--button-font);
+  font-weight: var(--button-weight);
+  font-size: var(--button-size);
+  line-height: var(--button-line);
+  letter-spacing: var(--button-spacing);
+  text-transform: var(--button-transform);
+  border-radius: var(--radius-lg);
+  padding: 12px 24px;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-button);
+  background: var(--color-bg-glass);
+  color: var(--color-primary-main);
+  border: 1px solid var(--color-border-light);
+  backdrop-filter: blur(8px);
 }
 
+
 button:hover:not(:disabled) {
-  background-color: var(--color-accent-secondary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-button-hover);
+  background: var(--gradient-button-hover);
 }
 
 button:disabled {
-  background-color: var(--color-bg-tertiary);
+  background: var(--color-bg-overlay);
   cursor: not-allowed;
+  opacity: 0.6;
 }

@@ -1,21 +1,69 @@
 .header {
-  background-color: var(--color-bg-secondary);
+  background: var(--glass-bg-primary);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   color: var(--color-text-primary);
-  padding: 0 1.5rem;
+  padding: 0 2rem;
   display: flex;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
   position: sticky;
-  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
+  top: 0;
+  z-index: var(--z-appbar);
+  transition: all 0.3s var(--ease-out-quint);
   height: var(--header-height);
-  
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-primary-subtle);
+  opacity: 0.5;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .header h1 {
-  font-size: clamp(1.25rem, 4vw, 1.5rem);
-  font-weight: 600;
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
+  font-weight: 700;
   margin: 0;
   width: 100%;
   text-align: right;
+  color: var(--color-primary-main);
+  text-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.5);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  animation: flicker 8s infinite alternate;
+}
+
+/* Neon flicker animation for the header title */
+@keyframes flicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 72%, 100% {
+    text-shadow: 
+      0 0 10px rgba(var(--color-primary-rgb), 0.8),
+      0 0 20px rgba(var(--color-primary-rgb), 0.6),
+      0 0 30px rgba(var(--color-primary-rgb), 0.4);
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 71.999% {
+    text-shadow: none;
+    opacity: 0.8;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 1.25rem;
+  }
+  
+  .header h1 {
+    font-size: 1.25rem;
+  }
 }

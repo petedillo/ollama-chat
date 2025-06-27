@@ -1,97 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Rajdhani:wght@400;600;700&family=Fira+Code:wght@400;700&display=swap');
 /* Prism.js syntax highlighting */
 @import './styles/prism-theme.css';
 
 :root {
-  /* Dark theme colors - Neon Dark Theme */
-  --color-bg-primary: #0a0a0f;
-  --color-bg-secondary: #121218;
-  --color-bg-tertiary: #1e1e2a;
-  --color-bg-input: #1a1a25;
-  
-  /* Text colors */
-  --color-text-primary: #f0f0ff;
-  --color-text-secondary: #a0a0c0;
-  --color-text-tertiary: #6a6a8f;
-  
-  /* Accent colors - Neon theme */
-  --color-accent-primary: #00f0ff;
-  --color-accent-secondary: #ff00ff;
-  --color-accent-tertiary: #00ff9d;
-  
-  /* Action colors */
-  --color-action-edit: #00f0ff;
-  --color-action-delete: #ff3d71;
-  --color-action-confirm: #00e096;
-  --color-action-cancel: #6a6a8f;
-  --color-action-hover: #ffffff;
-  
-  /* Button states */
-  --color-button-hover-bg: rgba(255, 255, 255, 0.1);
-  --color-button-active-bg: rgba(255, 255, 255, 0.2);
-  
-  /* Message colors */
-  --color-message-user: rgba(0, 240, 255, 0.15);
-  --color-message-assistant: #1a1a25;
-  --color-message-loading: #1e1e2a;
-  
-  /* Border colors */
-  --color-border: #2a2a3a;
-  
-  /* Spacing */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  
-  /* Border radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  /* DIO Aero Glass Theme Variables */
+  /* Color Palette */
+  --color-primary-main: #00f7ff;
+  --color-primary-light: #4dffff;
+  --color-primary-dark: #00c4cc;
+  --color-primary-rgb: 0, 247, 255;
+  --color-primary-contrast: #0a0a1a;
 
-  --header-height: 3.5rem; /* 56px */
-  --sidebar-width: 17.5rem; /* 280px */
-  --spacing-md: 1rem; /* 16px */
-  --spacing-sm: 0.5rem; /* 8px */
-  --spacing-lg: 1.5rem; /* 24px */
-  --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
-  --border-radius-sm: 0.25rem; /* 4px */
-  --border-radius-md: 0.375rem; /* 6px */
-  --border-radius-lg: 0.5rem; /* 8px */
+  --color-secondary-main: #9c27b0;
+  --color-secondary-light: #d05ce3;
+  --color-secondary-dark: #6a0080;
+  --color-secondary-contrast: #fff;
+
+  --color-error-main: #ff3366;
+  --color-error-light: #ff6b8b;
+  --color-error-dark: #c51162;
+  --color-error-contrast: #fff;
+
+  --color-bg-default: #0a0a1a;
+  --color-bg-paper: rgba(10, 15, 30, 0.6);
+  --color-bg-glass: rgba(25, 25, 45, 0.7);
+  --color-bg-overlay: rgba(10, 10, 26, 0.85);
+
+  --color-text-primary: #e0e0e0;
+  --color-text-secondary: #a0a0a0;
+  --color-text-disabled: #6c6c6c;
+  --color-text-hint: #888888;
+
+  --color-border-light: rgba(0, 247, 255, 0.3);
+  --color-border-main: rgba(255,255,255,0.1);
+  --color-border-dark: rgba(0,0,0,0.2);
+
+  --shadow-glass: 0 8px 32px 0 rgba(0,0,0,0.36);
+  --shadow-button: 0 0 15px rgba(0,247,255,0.2);
+  --shadow-button-hover: 0 0 25px rgba(0,247,255,0.4);
+  --shadow-text-glow: 0 0 10px rgba(0,247,255,0.8);
+  --shadow-text-shadow: 0 0 15px rgba(0,247,255,0.6);
+
+  --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  --gradient-button-hover: linear-gradient(135deg, rgba(0,247,255,0.2), rgba(0,200,210,0.1));
+  --gradient-vista-glow: radial-gradient(circle at 50% 50%, rgba(0,247,255,0.15), transparent 70%);
+
+  /* Typography */
+  --font-primary: 'Rajdhani', 'Segoe UI', sans-serif;
+  --font-heading: 'Orbitron', 'Arial Black', sans-serif;
+  --font-mono: 'Fira Code', 'Courier New', monospace;
+
+  --h1-font: var(--font-heading);
+  --h1-weight: 700;
+  --h1-size: 2.5rem;
+  --h1-line: 1.2;
+  --h1-spacing: 0.5px;
+  --h1-transform: uppercase;
+
+  --h2-font: var(--font-heading);
+  --h2-weight: 600;
+  --h2-size: 2rem;
+  --h2-line: 1.3;
+  --h2-spacing: 0.25px;
+
+  --body1-font: var(--font-primary);
+  --body1-weight: 400;
+  --body1-size: 1rem;
+  --body1-line: 1.5;
+  --body1-spacing: 0.15px;
+
+  --button-font: var(--font-primary);
+  --button-weight: 600;
+  --button-size: 1rem;
+  --button-line: 1.5;
+  --button-spacing: 0.5px;
+  --button-transform: uppercase;
+
+  /* Spacing & Layout */
+  --spacing-unit: 8px;
+  --spacing-section: 4rem;
+  --container-max-width: 1200px;
+  --container-padding: 0 1rem;
+
+  /* Border Radius */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 30px;
+
+  /* Z-index */
+  --z-appbar: 1100;
+  --z-drawer: 1200;
+  --z-modal: 1300;
+  --z-tooltip: 1500;
+  --z-snackbar: 1400;
+
+  /* Misc */
+  --header-height: 3.5rem;
+  --footer-height: 2.5rem;
 }
 
-/* Custom Scrollbar */
+/*
+  --- Global Scrollbar Styles (DIO Aero Glass Theme) ---
+  This is the primary, globally applied scrollbar style.
+  It ensures a consistent, themed appearance across the entire application.
+*/
+
+/* For Webkit-based browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-secondary);
-  border-radius: 4px;
+  background: rgba(10, 15, 30, 0.5);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-text-tertiary);
-  border-radius: 4px;
-  transition: background 0.2s ease;
+  background-color: rgba(0, 247, 255, 0.5);
+  border-radius: 10px;
+  border: 2px solid rgba(10, 15, 30, 0.5);
+  box-shadow: 0 0 12px rgba(0, 247, 255, 0.5);
+  transition: all 0.3s ease-in-out;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent-primary);
+  background-color: rgba(0, 247, 255, 0.8);
+  box-shadow: 0 0 16px rgba(0, 247, 255, 0.8);
 }
 
-/* Firefox scrollbar */
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* For Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-text-tertiary) var(--color-bg-secondary);
+  scrollbar-color: rgba(0, 247, 255, 0.5) rgba(10, 15, 30, 0.5);
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background-color: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  line-height: 1.5;
+  margin: 0;
+  font-family: var(--font-primary), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg-default);
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  font-size: 16px;
+  background-image: var(--gradient-vista-glow);
+  min-height: 100vh;
+}
+
+h1, .h1 {
+  font-family: var(--h1-font);
+  font-weight: var(--h1-weight);
+  font-size: var(--h1-size);
+  line-height: var(--h1-line);
+  letter-spacing: var(--h1-spacing);
+  text-transform: var(--h1-transform);
+  color: var(--color-primary-main);
+  text-shadow: var(--shadow-text-glow);
+}
+
+h2, .h2 {
+  font-family: var(--h2-font);
+  font-weight: var(--h2-weight);
+  font-size: var(--h2-size);
+  line-height: var(--h2-line);
+  letter-spacing: var(--h2-spacing);
+  color: var(--color-primary-main);
+}
+
+button, .button {
+  font-family: var(--button-font);
+  font-weight: var(--button-weight);
+  font-size: var(--button-size);
+  line-height: var(--button-line);
+  letter-spacing: var(--button-spacing);
+  text-transform: var(--button-transform);
+  border-radius: var(--radius-lg);
+  padding: 12px 24px;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-button);
+  background: var(--color-bg-glass);
+  color: var(--color-primary-main);
+  border: 1px solid var(--color-border-light);
+  backdrop-filter: blur(8px);
+}
+button:hover, .button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-button-hover);
+  background: var(--gradient-button-hover);
+}
+button:active, .button:active {
+  transform: translateY(0);
+  box-shadow: 0 0 10px rgba(0,247,255,0.3);
+}
+
+input, textarea, select {
+  background: var(--color-bg-glass);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+  font-family: var(--body1-font);
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-primary-main);
+  box-shadow: 0 0 0 2px rgba(0,247,255,0.2);
+}
+input::placeholder, textarea::placeholder {
+  color: var(--color-text-disabled);
+}
+
+.card, .glass {
+  background: var(--color-bg-paper);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-main);
+  box-shadow: var(--shadow-glass);
+  padding: 2rem;
+  margin: 1rem 0;
+}
+
+.neon-text {
+  color: var(--color-primary-main);
+  text-shadow: 0 0 10px rgba(0,247,255,0.8), 0 0 20px rgba(0,247,255,0.6);
+  animation: flicker 1.5s infinite alternate;
+}
+
+/* Animations */
+@keyframes flicker {
+  0% { text-shadow: 0 0 4px #00f7ff, 0 0 11px #00f7ff, 0 0 19px #00f7ff, 0 0 40px #00f7ff; }
+  100% { text-shadow: none; }
+}
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 15px rgba(0,247,255,0.2); }
+  50% { box-shadow: 0 0 25px rgba(0,247,255,0.4); }
+  100% { box-shadow: 0 0 15px rgba(0,247,255,0.2); }
+}
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 }
