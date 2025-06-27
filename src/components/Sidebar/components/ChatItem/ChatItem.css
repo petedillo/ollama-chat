@@ -1,47 +1,109 @@
 .chat-item {
-  padding: 0.5rem 0.75rem;
-  margin: 0 0.5rem 0.25rem;
-  border-radius: var(--radius-md);
+  --chat-item-padding: 0.75rem 1rem;
+  --chat-item-margin: 0 0.75rem 0.5rem;
+  --chat-item-gap: 1rem;
+  --chat-item-min-height: 52px;
+  --chat-item-avatar-size: 36px;
+  --chat-item-font-size: 0.9375rem;
+  --chat-item-border: 1px solid var(--color-border);
+  --chat-item-radius: var(--radius-md);
+  
+  padding: var(--chat-item-padding);
+  margin: var(--chat-item-margin);
+  border-radius: var(--chat-item-radius);
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  border: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(4px);
+  border: var(--chat-item-border);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
   overflow: hidden;
-  min-height: 44px;
-  height: 44px;
+  min-height: var(--chat-item-min-height);
+  height: auto;
   display: flex;
   align-items: center;
-  width: calc(100% - 1rem);
+  width: calc(100% - 1.5rem);
   box-sizing: border-box;
   white-space: nowrap;
-  gap: 0.75rem;
+  gap: var(--chat-item-gap);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  will-change: transform, box-shadow, border-color;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .chat-item.collapsed {
-  width: 40px;
-  height: 40px;
-  min-height: 40px;
-  padding: 0;
-  border-radius: 50%;
-  margin: 0 auto 8px;
+  --chat-item-padding: 0;
+  --chat-item-margin: 0 auto 12px;
+  --chat-item-gap: 0;
+  --chat-item-avatar-size: 44px;
+  --chat-item-border: 1px solid rgba(0, 247, 255, 0.15);
+  --chat-item-radius: 50%;
+  
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
   justify-content: center;
   overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 247, 255, 0.1);
+}
+
+/* Add some spacing between chat items when not collapsed */
+.chat-item:not(.collapsed) {
+  margin-bottom: 0.75rem;
+}
+
+/* Improve touch targets for mobile */
+@media (max-width: 768px) {
+  .chat-item {
+    padding: 0.85rem 1rem;
+    min-height: 56px;
+    margin: 0 0.5rem 0.75rem;
+    width: calc(100% - 1rem);
+  }
+  
+  .chat-item.collapsed {
+    width: 48px;
+    height: 48px;
+    min-height: 48px;
+    margin-bottom: 1rem;
+  }
 }
 
 .chat-item-avatar {
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
+  width: var(--chat-item-avatar-size, 36px);
+  height: var(--chat-item-avatar-size, 36px);
   border-radius: 50%;
-  background: var(--color-accent-primary);
+  background: linear-gradient(135deg, var(--color-accent-primary), #00b8d4);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: var(--chat-item-font-size, 0.9375rem);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 247, 255, 0.2);
+}
+
+.chat-item-avatar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+.chat-item:not(.collapsed):hover .chat-item-avatar {
+  transform: scale(1.05);
 }
 
 .chat-item.collapsed .chat-item-avatar {
@@ -54,10 +116,16 @@
   flex: 1;
   min-width: 0;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: opacity 0.3s ease;
 }
 
 .chat-item.collapsed .chat-item-content {
-  display: none;
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
 }
 
 .chat-item-title {
@@ -134,28 +202,28 @@
   to { opacity: 1; transform: translateX(0); }
 }
 
-.chat-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3px;
-  height: 100%;
-  background: var(--color-accent-primary);
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.3s ease;
-}
-
+/* Hover & Active States */
 .chat-item:not(.collapsed):hover {
-  background: var(--color-bg-tertiary);
-  transform: translateX(4px);
-  border-color: var(--color-accent-primary);
-  box-shadow: 0 2px 12px rgba(0, 240, 255, 0.15);
+  background: rgba(0, 247, 255, 0.03);
+  transform: translateX(6px) scale(1.02);
+  border-color: rgba(0, 247, 255, 0.3);
+  box-shadow: 0 6px 20px rgba(0, 247, 255, 0.15);
+  z-index: 1;
 }
 
-.chat-item:hover::before {
-  transform: scaleY(1);
+.chat-item:active:not(.collapsed) {
+  transform: translateX(4px) scale(0.99);
+  box-shadow: 0 2px 8px rgba(0, 247, 255, 0.1);
+}
+
+.chat-item.collapsed:hover {
+  transform: scale(1.05);
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 0 20px rgba(0, 247, 255, 0.2);
+}
+
+.chat-item.collapsed:active {
+  transform: scale(0.98);
 }
 
 .chat-item.active:not(.collapsed) {
@@ -165,6 +233,7 @@
   border: 1px solid var(--color-accent-primary);
   box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
   transform: translateX(4px);
+  border-left: 3px solid var(--color-accent-primary);
 }
 
 .chat-item.collapsed.active {
