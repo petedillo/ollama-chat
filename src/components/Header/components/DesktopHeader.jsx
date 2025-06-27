@@ -5,22 +5,20 @@ const truncateTitle = (title) => {
   return title.length > 15 ? `${title.substring(0, 15)}...` : title;
 };
 
-export const DesktopHeader = ({ currentChatTitle }) => {
+export const DesktopHeader = ({ currentChatTitle, formatTitle }) => {
   return (
     <header className="desktop-header">
-      <div className="desktop-header-left">
-        <h1 className="desktop-app-title">Dio</h1>
-      </div>
-      
-      <div className="desktop-header-right">
-        {currentChatTitle && (
-          <h2 
-            className="desktop-chat-title" 
-            title={currentChatTitle}
-          >
-            {truncateTitle(currentChatTitle)}
-          </h2>
-        )}
+      <div className="desktop-header-content">
+        <div className="desktop-header-actions">
+          {currentChatTitle && (
+            <h2 
+              className="desktop-chat-title" 
+              title={currentChatTitle}
+            >
+              {formatTitle ? formatTitle(currentChatTitle) : truncateTitle(currentChatTitle)}
+            </h2>
+          )}
+        </div>
       </div>
     </header>
   );

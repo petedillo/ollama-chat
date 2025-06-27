@@ -1,7 +1,7 @@
 
 /* Reset and Base Styles */
 :root {
-  --header-height: 64px;
+  --header-height: var(--header-height, 60px); /* Use the global variable */
   --sidebar-width: 280px;
   --sidebar-collapsed-width: 80px;
 }

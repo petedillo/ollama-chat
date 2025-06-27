@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import { useChatContext } from '../../context/ChatContext';
 import { Header } from '../Header/Header';
 import { Sidebar } from '../Sidebar';
+import { DesktopSidebar } from '../Sidebar/DesktopSidebar/DesktopSidebar';
 import { ChatContainer } from '../ChatContainer/ChatContainer';
+import './MainLayout.css';
 
 export const MainLayout = () => {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); // Start collapsed by default
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 480);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -36,8 +38,8 @@ export const MainLayout = () => {
           setIsMobile(false);
           setSidebarOpen(false);
           document.body.classList.remove('sidebar-open');
-          // Always expand the sidebar when switching to desktop
-          setIsSidebarCollapsed(false);
+          // Collapse sidebar by default on desktop
+          setIsSidebarCollapsed(true);
         }
       }
     };
@@ -65,7 +67,12 @@ export const MainLayout = () => {
     };
   }, [isMobile, isSidebarCollapsed]);
 
-  const toggleSidebar = (collapsed) => {
+  const toggleSidebar = (event) => {
+    // Prevent event bubbling to avoid multiple toggles
+    if (event) {
+      event.stopPropagation();
+    }
+    
     if (isMobile) {
       // For mobile, just toggle the open state
       const newState = !sidebarOpen;
@@ -76,9 +83,12 @@ export const MainLayout = () => {
         document.body.classList.remove('sidebar-open');
       }
     } else {
-      // For desktop, handle collapse/expand
-      const newState = collapsed !== undefined ? collapsed : !isSidebarCollapsed;
-      setIsSidebarCollapsed(newState);
+      setIsSidebarCollapsed(!isSidebarCollapsed);
+      // Force reflow to ensure smooth animation
+      const sidebar = document.querySelector('.desktop-sidebar');
+      if (sidebar) {
+        sidebar.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+      }
     }
   };
 
@@ -90,33 +100,40 @@ export const MainLayout = () => {
   };
 
   return (
-    <div className="app-container">
-      <Header 
-        currentChatTitle={currentChatTitle}
-        isSidebarCollapsed={isSidebarCollapsed}
-        isMobile={isMobile}
-        onMenuClick={toggleSidebar}
-      />
-      
-      <div className={`main-content ${isSidebarCollapsed ? 'sidebar-collapsed' : ''} ${sidebarOpen ? 'sidebar-open' : ''}`}>
-        <Sidebar 
-          isCollapsed={isSidebarCollapsed} 
-          isMobile={isMobile}
-          isOpen={sidebarOpen}
-          onClose={closeMobileSidebar}
-          onToggle={toggleSidebar}
+    <div className={`app-container ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+      <div className="main-content">
+        <Header 
+          currentChatTitle={currentChatTitle} 
+          onMenuClick={toggleSidebar}
+          className={isMobile ? 'mobile-header' : 'desktop-header'}
         />
         
-        {isMobile && (
-          <div 
-            className={`sidebar-overlay ${sidebarOpen ? 'open' : ''}`} 
-            onClick={closeMobileSidebar}
-            aria-hidden="true"
-          />
-        )}
-        
-        <div className="chat-area" onClick={closeMobileSidebar}>
-          <ChatContainer />
+        <div className="content-wrapper">
+          {!isMobile && (
+            <DesktopSidebar 
+              isCollapsed={isSidebarCollapsed}
+              onToggle={toggleSidebar}
+            />
+          )}
+          <div className="chat-area" onClick={isMobile ? closeMobileSidebar : undefined}>
+            {isMobile && (
+              <>
+                <Sidebar 
+                  isCollapsed={isSidebarCollapsed} 
+                  isMobile={true}
+                  isOpen={sidebarOpen}
+                  onClose={closeMobileSidebar}
+                  onToggle={toggleSidebar}
+                />
+                <div 
+                  className={`sidebar-overlay ${sidebarOpen ? 'open' : ''}`} 
+                  onClick={closeMobileSidebar}
+                  aria-hidden="true"
+                />
+              </>
+            )}
+            <ChatContainer />
+          </div>
         </div>
       </div>
     </div>
