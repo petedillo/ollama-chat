@@ -288,6 +288,7 @@
   margin: 0;
   padding: 0;
   width: 100%;
+}
 
 /* Collapsed state styles */
 .desktop-sidebar.collapsed .new-chat-button span {
