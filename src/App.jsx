@@ -3,6 +3,7 @@ import { Header } from './components/Header/Header';
 import { Sidebar } from './components/Sidebar';
 import { ChatContainer } from './components/ChatContainer/ChatContainer';
 import { ChatProvider, useChatContext } from './context/ChatContext.jsx';
+import { UserProvider } from './context/UserContext';
 import './App.css';
 
 // Create a separate component that uses the chat context
@@ -105,12 +106,14 @@ const AppContent = () => {
   );
 };
 
-// Main App component that wraps everything with ChatProvider
+// Main App component that wraps everything with providers
 function App() {
   return (
-    <ChatProvider>
-      <AppContent />
-    </ChatProvider>
+    <UserProvider>
+      <ChatProvider>
+        <AppContent />
+      </ChatProvider>
+    </UserProvider>
   );
 }
 
