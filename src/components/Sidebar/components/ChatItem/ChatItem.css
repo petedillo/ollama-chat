@@ -5,49 +5,36 @@
   --chat-item-min-height: 52px;
   --chat-item-avatar-size: 36px;
   --chat-item-font-size: 0.9375rem;
-  --chat-item-border: 1px solid rgba(0, 247, 255, 0.3);
-  --chat-item-radius: 8px;
-  position: relative; /* Ensure z-index works properly */
-  z-index: 1;
   
+  position: relative;
   padding: var(--chat-item-padding);
   margin: var(--chat-item-margin);
-  border-radius: var(--chat-item-radius);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  border: var(--chat-item-border);
-  background: rgba(10, 15, 30, 0.6);
-  backdrop-filter: blur(12px);
-  overflow: hidden;
   min-height: var(--chat-item-min-height);
-  height: auto;
   display: flex;
   align-items: center;
   width: calc(100% - 1.5rem);
   box-sizing: border-box;
   white-space: nowrap;
   gap: var(--chat-item-gap);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  will-change: transform, box-shadow, border-color;
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+  transition: all 0.2s ease;
   color: #e0e0e0;
   font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+  border: none !important;
+  background: none !important;
+  outline: none;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
 }
 
-.chat-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+.chat-item:hover {
+  background: none;
+}
+
+.chat-item:active {
+  transform: none;
+  background: none;
 }
 
 .chat-item.collapsed {
@@ -55,21 +42,39 @@
   --chat-item-margin: 0 auto 12px;
   --chat-item-gap: 0;
   --chat-item-avatar-size: 44px;
-  --chat-item-border: 1px solid rgba(0, 247, 255, 0.15);
-  --chat-item-radius: 50%;
   
   width: 44px;
   height: 44px;
   min-height: 44px;
   justify-content: center;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(0, 247, 255, 0.1);
+  overflow: visible;
+  border: none;
+  background: none;
 }
 
 /* Add some spacing between chat items when not collapsed */
 .chat-item:not(.collapsed) {
   margin-bottom: 0.75rem;
+}
+
+/* Active state for chat items */
+.chat-item.active {
+  background: none !important;
+  color: #00f7ff;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+}
+
+/* Hover state for collapsed items */
+.chat-item.collapsed:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.chat-item.collapsed:active {
+  transform: none;
+  box-shadow: none;
 }
 
 /* Improve touch targets for mobile */
@@ -79,6 +84,8 @@
     min-height: 56px;
     margin: 0 0.5rem 0.75rem;
     width: calc(100% - 1rem);
+    border: none;
+    background: none;
   }
   
   .chat-item.collapsed {
@@ -86,6 +93,8 @@
     height: 48px;
     min-height: 48px;
     margin-bottom: 1rem;
+    border: none;
+    background: none;
   }
 }
 
@@ -94,31 +103,22 @@
   width: var(--chat-item-avatar-size);
   height: var(--chat-item-avatar-size);
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(0, 247, 255, 0.8), rgba(0, 200, 210, 0.6));
+  background: none !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #0a0a1a;
+  color: inherit;
   font-weight: 600;
   font-size: 0.875rem;
-  flex-shrink: 0;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 15px rgba(0, 247, 255, 0.2);
-  border: 1px solid rgba(0, 247, 255, 0.5);
+  border: none !important;
+  box-shadow: none !important;
   transition: all 0.3s ease;
 }
 
 .chat-item-avatar::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
-  border-radius: 50%;
-  opacity: 0.7;
+  content: none;
 }
 
 .chat-item:not(.collapsed):hover .chat-item-avatar {
