@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import { FaUser } from 'react-icons/fa';
+import { FaSpinner } from 'react-icons/fa';
 import { MARKDOWN_COMPONENTS, MARKDOWN_PLUGINS } from '../constants/markdownComponents';
 import './Message.css';
 
@@ -13,17 +13,6 @@ const Message = ({ message, isStreaming = false, isLast = false }) => {
 
   return (
     <div className={`message ${isUser ? 'user-message' : 'assistant-message'} ${isLast ? 'last-message' : ''}`}>
-      <div className="message-avatar">
-        {isUser ? (
-          <div className="avatar user-avatar">
-            <FaUser size={16} />
-          </div>
-        ) : (
-          <div className="avatar bot-avatar">
-            <FaUser size={16} />
-          </div>
-        )}
-      </div>
       <div className="message-content">
         <div className="message-header">
           <span className="message-role">{isUser ? 'You' : 'Assistant'}</span>
