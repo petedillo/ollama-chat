@@ -1,10 +1,16 @@
 import { FiPlus, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 import { ChatList } from './components/ChatList/ChatList';
 import { UserProfile } from './components/UserProfile/UserProfile';
-import { useChatContext } from '../../context/ChatContext';
+import { useChatContext } from '../../context/ChatContext.jsx';
 import './Sidebar.css';
 
-export const Sidebar = ({ isCollapsed, onToggle }) => {
+export const Sidebar = ({ isCollapsed, onToggle, isMobile, isOpen }) => {
+  const sidebarClasses = [
+    'sidebar',
+    isCollapsed && !isMobile ? 'collapsed' : '',
+    isMobile ? 'mobile' : '',
+    isMobile && isOpen ? 'open' : ''
+  ].filter(Boolean).join(' ');
   const { 
     chatSessions, 
     currentChatId, 
@@ -50,12 +56,14 @@ export const Sidebar = ({ isCollapsed, onToggle }) => {
   };
 
   return (
-    <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+    <div className={sidebarClasses}>
       <div className="sidebar-header">
-        {!isCollapsed && <h1 className="sidebar-title">Dio Chat</h1>}
-        <button className="toggle-btn" onClick={onToggle}>
-          {isCollapsed ? <FiChevronsRight /> : <FiChevronsLeft />}
-        </button>
+        {(!isCollapsed || isMobile) && <h2 className="sidebar-title">Chats</h2>}
+        {!isMobile && (
+          <button className="toggle-btn" onClick={() => onToggle(!isCollapsed)}>
+            {isCollapsed ? <FiChevronsRight /> : <FiChevronsLeft />}
+          </button>
+        )}
       </div>
       <div className="sidebar-content">
         <button 

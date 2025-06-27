@@ -1,5 +1,5 @@
 import React from 'react';
-import { useChatContext } from '../../context/ChatContext';
+import { useChatContext } from '../../context/ChatContext.jsx';
 import { useMessageHandler } from './hooks/useMessageHandler';
 import MessagesContainer from './MessagesContainer/MessagesContainer';
 import InputArea from './InputArea/InputArea';

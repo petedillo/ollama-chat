@@ -135,12 +135,20 @@ html {
     grid-column: 1;
     position: fixed;
     width: 100%;
+    z-index: 1000;
   }
   
   .sidebar {
     position: fixed;
+    top: var(--header-height);
+    left: 0;
+    bottom: 0;
     transform: translateX(-100%);
     transition: transform 0.3s var(--transition-timing);
+    width: 280px;
+    z-index: 999;
+    height: calc(100vh - var(--header-height));
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
   }
   
   .sidebar.open {
@@ -150,6 +158,25 @@ html {
   .main-container {
     grid-column: 1;
     margin-top: var(--header-height);
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Overlay when sidebar is open */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    backdrop-filter: blur(2px);
+  }
+  
+  .sidebar-overlay.open {
+    display: block;
   }
 }
 
