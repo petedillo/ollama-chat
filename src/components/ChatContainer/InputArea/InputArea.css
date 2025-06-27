@@ -1,5 +1,5 @@
 .input-container {
-  padding: 1.5rem;
+  padding: 1.25rem 1.5rem;
   position: relative;
   width: 100%;
   max-width: 800px;
@@ -8,25 +8,29 @@
   flex-shrink: 0;
   z-index: 10;
   margin-top: auto;
-  background: var(--color-bg-glass);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid var(--color-border);
-  padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  background: rgba(10, 10, 20, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(0, 247, 255, 0.1);
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .input-wrapper {
   display: flex;
-  align-items: flex-end;
-  background-color: var(--color-bg-input);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-  transition: all 0.2s ease;
+  align-items: center; /* Changed from stretch to center */
+  min-height: 56px; /* Ensure minimum height */
+  background: rgba(20, 25, 40, 0.7);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 247, 255, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   max-width: 100%;
   margin: 0 auto;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(8px);
   overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .input-wrapper.loading {
@@ -59,8 +63,9 @@
 }
 
 .input-wrapper:focus-within {
-  border-color: var(--color-accent-primary);
-  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.2);
+  border-color: rgba(0, 247, 255, 0.5);
+  box-shadow: 0 0 0 1px rgba(0, 247, 255, 0.3), 0 8px 32px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
 }
 
 .input-wrapper:has(.message-input:disabled) {
@@ -70,22 +75,39 @@
 
 .message-input {
   flex: 1;
-  padding: 0.875rem 1.25rem;
+  padding: 0.75rem 1.25rem; /* Reduced top/bottom padding */
   border: none;
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   font-size: 0.95rem;
-  line-height: 1.5;
+  line-height: 1.4; /* Adjusted line height */
   background: transparent;
-  color: var(--color-text-primary);
+  color: #f0f0f0;
   resize: none;
   min-height: 24px;
   max-height: 200px;
   overflow-y: auto;
   margin: 0;
-  font-family: inherit;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 247, 255, 0.3) transparent;
+  align-self: center; /* Ensure proper alignment in flex container */
+}
+
+/* Custom scrollbar for WebKit browsers */
+.message-input::-webkit-scrollbar {
+  width: 6px;
+}
+
+.message-input::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.message-input::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 247, 255, 0.3);
+  border-radius: 3px;
 }
 
 .message-input:focus {
@@ -94,8 +116,9 @@
 }
 
 .message-input::placeholder {
-  color: var(--color-text-tertiary);
-  opacity: 0.8;
+  color: rgba(200, 210, 220, 0.6);
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
 .message-input:disabled {
@@ -103,155 +126,148 @@
   opacity: 0.6;
 }
 
-.send-button {
+/* Send Button - Centered and isolated styles */
+.input-container .input-wrapper > .send-button,
+.input-container form > .input-wrapper > .send-button {
+  --button-size: 44px;
+  --icon-size: 20px;
+  
+  /* Reset all inherited styles */
+  all: unset;
+  
+  /* Base styles */
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 8px 0 16px; /* Adjusted right margin */
+  font: inherit;
+  cursor: pointer;
+  color: rgba(0, 247, 255, 0.8);
+  box-shadow: none;
+  text-shadow: none;
+  border-radius: 0;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: normal;
+  line-height: 1;
+  
+  /* Layout */
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  margin: 8px;
-  background: var(--color-bg-glass);
-  color: var(--color-primary-main);
-  border: 1px solid var(--color-border-light);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 10;
-  overflow: hidden;
-  backdrop-filter: blur(8px);
-  box-shadow: var(--shadow-button);
-}
-
-.send-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-button-hover);
-  background: var(--gradient-button-hover);
-  color: var(--color-primary-light);
-}
-
-.send-button:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
-}
-
-.send-button:disabled {
-  background: var(--color-bg-glass);
-  border-color: var(--color-border-main);
-  color: var(--color-text-disabled);
-  cursor: not-allowed;
+  width: var(--button-size);
+  min-width: var(--button-size);
+  height: var(--button-size); /* Fixed height */
+  align-self: center; /* Ensure proper alignment in flex container */
+  padding: 0;
+  box-sizing: border-box;
+  
+  /* Visual */
   opacity: 0.7;
+  transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-.send-icon, .spinner-icon {
-  width: 20px;
-  height: 20px;
-  color: inherit;
-  transition: all 0.3s ease;
-  position: relative;
-  z-index: 2;
-}
-
-.spinner-icon {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.send-button:not(:disabled):hover .send-icon {
-  transform: translateX(1px) translateY(-1px);
-}
-
-.spinner-icon {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.send-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.send-button:not(:disabled):hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(0, 240, 255, 0.3);
-}
-
-.send-button:not(:disabled):hover::before {
+/* Button states - isolated from other buttons */
+.input-container .input-wrapper > .send-button:not(:disabled):hover,
+.input-container form > .input-wrapper > .send-button:not(:disabled):hover {
   opacity: 1;
+  color: #00f7ff;
+  transform: translateY(-1px);
 }
 
-.send-button:disabled {
-  background: var(--color-bg-tertiary);
-  color: var(--color-text-tertiary);
+.input-container .input-wrapper > .send-button:active:not(:disabled),
+.input-container form > .input-wrapper > .send-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.input-container .input-wrapper > .send-button:disabled,
+.input-container form > .input-wrapper > .send-button:disabled {
+  opacity: 0.4;
   cursor: not-allowed;
-  transform: none !important;
-  box-shadow: none !important;
 }
 
-.send-button svg {
-  width: 20px;
-  height: 20px;
-  stroke-width: 2;
-  position: relative;
-  z-index: 1;
+/* Icons */
+.send-button .icon,
+.send-button .spinner {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+  flex-shrink: 0; /* Prevent icon from shrinking */
 }
 
-/* Spinner animation for send button when loading */
-.spinner {
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(10, 10, 15, 0.3);
-  border-radius: 50%;
-  border-top-color: #0a0a0f;
-  animation: spin 1s ease-in-out infinite;
-  position: relative;
-  z-index: 1;
+/* Send icon specific */
+.send-button:not(:disabled):hover .icon {
+  transform: translateX(2px);
+}
+
+/* Loading spinner */
+.send-button .spinner {
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
+  from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
 /* Input hints */
 .input-hints {
   display: flex;
-  gap: var(--spacing-md);
-  margin-top: 8px;
-  padding: 0 4px;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.7rem;
+  color: rgba(180, 200, 220, 0.6);
+  letter-spacing: 0.02em;
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+
+.input-container:focus-within .input-hints {
+  opacity: 0.8;
 }
 
 .hint {
-  font-size: 0.75rem;
-  color: var(--color-text-tertiary);
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 0.5rem;
+  position: relative;
+  padding: 0.2rem 0.5rem 0.2rem 1.25rem;
+  background: rgba(0, 247, 255, 0.05);
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(0, 247, 255, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hint:hover {
+  background: rgba(0, 247, 255, 0.1);
+  color: rgba(220, 240, 255, 0.9);
+  transform: translateY(-1px);
 }
 
 .hint:before {
   content: '';
   display: inline-block;
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background-color: var(--color-text-tertiary);
-  opacity: 0.6;
+  background: rgba(0, 247, 255, 0.6);
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 6px rgba(0, 247, 255, 0.4);
+  transition: all 0.3s ease;
+}
+
+.hint:hover:before {
+  background: #00f7ff;
+  box-shadow: 0 0 10px rgba(0, 247, 255, 0.6);
 }
 
 /* Responsive adjustments */

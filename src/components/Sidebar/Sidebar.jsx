@@ -4,13 +4,21 @@ import { UserProfile } from './components/UserProfile/UserProfile';
 import { useChatContext } from '../../context/ChatContext.jsx';
 import './Sidebar.css';
 
-export const Sidebar = ({ isCollapsed, onToggle, isMobile, isOpen }) => {
+export const Sidebar = ({ isCollapsed, onToggle, isMobile, isOpen, onClose }) => {
   const sidebarClasses = [
     'sidebar',
     isCollapsed && !isMobile ? 'collapsed' : '',
     isMobile ? 'mobile' : '',
     isMobile && isOpen ? 'open' : ''
   ].filter(Boolean).join(' ');
+  
+  // Close sidebar when a chat is selected on mobile
+  const handleChatSelect = (chatId) => {
+    switchChat(chatId);
+    if (isMobile) {
+      onClose?.();
+    }
+  };
   const { 
     chatSessions, 
     currentChatId, 
@@ -31,9 +39,7 @@ export const Sidebar = ({ isCollapsed, onToggle, isMobile, isOpen }) => {
     createNewChat();
   };
 
-  const handleChatSelect = (chatId) => {
-    switchChat(chatId);
-  };
+
 
   const handleChatEdit = async (chatId, newTitle) => {
     try {

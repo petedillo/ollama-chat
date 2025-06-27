@@ -7,6 +7,24 @@
   background: var(--color-bg-default);
   position: relative;
   overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .chat-container {
+    width: 100vw;
+    height: calc(100vh - var(--header-height));
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    transform: translateX(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .chat-container.sidebar-open {
+    transform: translateX(280px);
+  }
 }
 
 

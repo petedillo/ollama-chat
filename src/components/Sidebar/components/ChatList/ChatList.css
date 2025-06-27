@@ -1,13 +1,37 @@
 .chat-list {
   list-style: none;
-  padding: 0;
+  padding: 0.5rem 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0.5rem;
   flex: 1;
   overflow-y: auto;
-  padding: var(--spacing-sm);
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent !important;
+}
+
+/* Ensure proper spacing in mobile view */
+.sidebar.mobile .chat-list {
+  padding: 0.5rem 0.75rem;
+}
+
+/* Chat list container */
+.chat-list-container {
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: transparent !important;
+}
+
+/* Ensure proper width for chat items */
+.chat-list > li {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 /* Collapsed state */

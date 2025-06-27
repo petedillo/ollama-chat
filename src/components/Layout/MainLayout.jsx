@@ -65,14 +65,13 @@ export const MainLayout = () => {
       />
       
       <div className="main-content">
-        <div className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''} ${sidebarOpen ? 'open' : ''}`}>
-          <Sidebar 
-            isCollapsed={isSidebarCollapsed} 
-            isMobile={isMobile}
-            onClose={closeMobileSidebar}
-            toggleCollapse={toggleSidebar}
-          />
-        </div>
+        <Sidebar 
+          isCollapsed={isSidebarCollapsed} 
+          isMobile={isMobile}
+          isOpen={sidebarOpen}
+          onClose={closeMobileSidebar}
+          onToggle={toggleSidebar}
+        />
         
         {isMobile && (
           <div 
@@ -82,7 +81,7 @@ export const MainLayout = () => {
           />
         )}
         
-        <div className="chat-area" onClick={closeMobileSidebar}>
+        <div className={`chat-area ${isMobile ? 'mobile' : ''} ${sidebarOpen ? 'sidebar-open' : ''}`} onClick={closeMobileSidebar}>
           <ChatContainer />
         </div>
       </div>

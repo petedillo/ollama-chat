@@ -69,11 +69,12 @@ const InputArea = ({
           disabled={loading || !messageInput.trim() || !currentChat}
           className="send-button"
           aria-label={loading ? 'Sending...' : 'Send message'}
+          aria-busy={loading}
         >
           {loading ? (
-            <FaSpinner className="spinner-icon" />
+            <FaSpinner className="spinner" />
           ) : (
-            <FaPaperPlane className="send-icon" />
+            <FaPaperPlane className="icon" />
           )}
         </button>
       </div>
