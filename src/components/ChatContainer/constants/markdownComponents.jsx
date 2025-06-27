@@ -1,8 +1,20 @@
 
 import { CodeBlock } from '../CodeBlock/CodeBlock';
 import rehypeSanitize from 'rehype-sanitize';
-import rehypePrism from '@mapbox/rehype-prism';
 import remarkGfm from 'remark-gfm';
+
+// Register languages
+import 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-c';
+import 'prismjs/components/prism-cpp';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-python';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-tsx';
+import 'prismjs/components/prism-typescript';
 
 export const MARKDOWN_COMPONENTS = {
   code({ node, inline, className, children, ...props }) {
@@ -38,6 +50,6 @@ export const MARKDOWN_COMPONENTS = {
 };
 
 export const MARKDOWN_PLUGINS = {
-  rehype: [rehypeSanitize, rehypePrism],
+  rehype: [rehypeSanitize],
   remark: [remarkGfm]
 };

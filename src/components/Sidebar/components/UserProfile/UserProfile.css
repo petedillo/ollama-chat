@@ -2,47 +2,91 @@
 .user-profile {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1rem;
-  border-top: 1px solid var(--color-border-light);
-  gap: 0.75rem;
+  padding: 1rem 0.75rem;
+  border-top: 1px solid var(--glass-border);
+  background: var(--glass-bg-secondary);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  transition: all 0.3s var(--ease-out-quint);
+  position: relative;
+  overflow: hidden;
 }
 
-/* User Avatar */
 .user-avatar {
   position: relative;
-  flex-shrink: 0;
-}
-
-.avatar-placeholder {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: transparent;
+  overflow: hidden;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+  border: 2px solid var(--color-primary-light);
+  transition: all 0.3s var(--ease-out-quint);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border-main);
-  background-color: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary-main));
+  color: white;
+  transition: all 0.3s var(--ease-out-quint);
 }
 
 .avatar-icon {
-  font-size: 1.2rem;
+  width: 18px;
+  height: 18px;
+  color: white;
 }
 
-/* User Info */
+.status-indicator {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--glass-bg-secondary);
+}
+
+.status-indicator.online {
+  background-color: #4ade80;
+  box-shadow: 0 0 0 2px var(--glass-bg-secondary), 0 0 0 4px rgba(74, 222, 128, 0.5);
+}
+
+.status-indicator.offline {
+  background-color: #9ca3af;
+}
+
+.status-indicator.away {
+  background-color: #fbbf24;
+}
+
 .user-info {
   flex: 1;
   min-width: 0;
+  margin-right: 0.5rem;
+  overflow: hidden;
 }
 
 .user-name {
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.875rem;
   color: var(--color-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.9rem;
+  line-height: 1.2;
+  margin-bottom: 2px;
 }
 
 .user-email {
@@ -51,42 +95,40 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.2;
+  opacity: 0.9;
+  transition: all 0.2s ease;
 }
 
-/* Settings Button */
-.settings-button {
-  background: transparent;
-  border: 1px solid var(--color-border-main);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
+.user-actions {
+  display: flex;
+  gap: 0.25rem;
+  margin-left: auto;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all 0.3s var(--ease-out-quint);
+}
+
+.user-profile:hover .user-actions {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: not-allowed;
-  color: var(--color-text-disabled);
   transition: all 0.2s ease;
-  padding: 0;
-  margin: 0;
-  opacity: 0.6;
-}
-
-.settings-icon {
-  font-size: 1.2rem;
-}
-
-/* Disabled States */
-.disabled {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-.user-avatar.disabled .avatar-placeholder {
-  background: transparent;
-  border-color: var(--color-border-main);
-  color: var(--color-text-disabled);
-  background-color: rgba(255, 255, 255, 0.03);
-  opacity: 0.7;
+  position: relative;
+  overflow: hidden;
+  width: 32px;
+  height: 32px;
 }
 
 .user-info.disabled .user-name,

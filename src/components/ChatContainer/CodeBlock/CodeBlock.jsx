@@ -1,32 +1,46 @@
 import { useEffect, useRef } from 'react';
 import Prism from 'prismjs';
-import 'prismjs/components/prism-bash';
+import { getPrismLanguage } from '../../../utils/prismLanguages';
 import './CodeBlock.css';
 
-// Register zsh as an alias for bash
-Prism.languages.zsh = Prism.languages.bash;
-
-// Add any zsh-specific syntax
-Prism.languages.zsh['parameter'] = [
-  /\$[\w\d_]+/,
-  /\$\{[^}]+\}/,
-  /\$\([^)]+\)/,
-  /[^\w\d\s]\-[a-zA-Z]+/,
-];
+// Language titles for display
+const LANGUAGE_TITLES = {
+  'bash': 'Bash',
+  'c': 'C',
+  'cpp': 'C++',
+  'css': 'CSS',
+  'html': 'HTML',
+  'javascript': 'JavaScript',
+  'jsx': 'JSX',
+  'json': 'JSON',
+  'python': 'Python',
+  'tsx': 'TSX',
+  'typescript': 'TypeScript',
+  'text': 'Text'
+};
 
 export const CodeBlock = ({ language, children }) => {
   const codeRef = useRef(null);
+  
+  // Get the normalized language with fallback handling
+  const normalizedLanguage = getPrismLanguage(language);
 
   useEffect(() => {
     if (codeRef.current) {
-      // Highlight the code block
-      Prism.highlightElement(codeRef.current);
+      try {
+        // Highlight the code block with error handling
+        Prism.highlightElement(codeRef.current);
+      } catch (error) {
+        console.warn(`Failed to highlight code block with language: ${language}`, error);
+        // Fallback to plain text
+        codeRef.current.className = 'language-text';
+      }
     }
   }, [children, language]);
 
   return (
-    <pre className={`language-${language}`}>
-      <code ref={codeRef} className={`language-${language}`}>
+    <pre className={`language-${normalizedLanguage}`}>
+      <code ref={codeRef} className={`language-${normalizedLanguage}`}>
         {children}
       </code>
     </pre>

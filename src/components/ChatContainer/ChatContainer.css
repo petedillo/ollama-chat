@@ -2,23 +2,11 @@
 .chat-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
-  max-width: 900px;
   height: 100%;
-  margin: 0 auto;
-  padding: 1.5rem 1.5rem 0 1.5rem;
-  box-sizing: border-box;
-  background: var(--glass-bg-primary);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg), 0 0 24px 2px rgba(var(--color-primary-rgb), 0.10);
+  background: var(--color-bg-default);
   position: relative;
-  /* overflow: hidden; /* This was clipping the sticky input. Scrolling is handled by the messages container now. */
-  justify-content: space-between;
-  border: 1.5px solid var(--glass-border);
-  transition: box-shadow 0.3s var(--ease-out-quint), background 0.3s var(--ease-out-quint);
+  overflow: hidden;
 }
 
 
