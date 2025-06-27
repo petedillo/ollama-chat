@@ -2,7 +2,7 @@ import React from 'react';
 import { useChatContext } from '../../context/ChatContext.jsx';
 import { useMessageHandler } from './hooks/useMessageHandler';
 import MessagesContainer from './MessagesContainer/MessagesContainer';
-import InputArea from './InputArea/InputArea';
+import ResponsiveInputArea from './InputArea/ResponsiveInputArea';
 import { ErrorMessage } from './ErrorMessage/ErrorMessage';
 import './ChatContainer.css';
 
@@ -28,7 +28,7 @@ export const ChatContainer = () => {
         />
       </div>
       
-      <InputArea
+      <ResponsiveInputArea
         messageInput={messageInput}
         setMessageInput={setMessageInput}
         handleSendMessage={handleSendMessage}
