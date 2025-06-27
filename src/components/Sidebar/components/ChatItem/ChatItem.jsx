@@ -117,18 +117,18 @@ export const ChatItem = ({
       {showActions && (
         <div className="chat-item-actions">
           <button
-            className="chat-item-action"
+            className="edit"
             onClick={handleEditClick}
             aria-label="Edit chat title"
           >
-            <FiEdit2 size={14} />
+            <FiEdit2 size={16} />
           </button>
           <button
-            className="chat-item-action"
+            className="delete"
             onClick={handleDeleteClick}
             aria-label="Delete chat"
           >
-            <FiTrash2 size={14} />
+            <FiTrash2 size={16} />
           </button>
         </div>
       )}

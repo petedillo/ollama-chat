@@ -1,9 +1,8 @@
 import { FiPlus, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 import { ChatList } from './components/ChatList/ChatList';
+import { UserProfile } from './components/UserProfile/UserProfile';
 import { useChatContext } from '../../context/ChatContext';
 import './Sidebar.css';
-
-
 
 export const Sidebar = ({ isCollapsed, onToggle }) => {
   const { 
@@ -50,39 +49,38 @@ export const Sidebar = ({ isCollapsed, onToggle }) => {
     }
   };
 
-
-
-
-
   return (
-      <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-        <div className="sidebar-header">
-          {!isCollapsed && <h1 className="sidebar-title">Dio Chat</h1>}
-          <button className="toggle-btn" onClick={onToggle}>
-            {isCollapsed ? <FiChevronsRight /> : <FiChevronsLeft />}
-          </button>
-        </div>
-        <div className="sidebar-content">
-          <button 
-            className="new-chat-button" 
-            onClick={handleCreateNewChat} 
-            disabled={loading}
-          >
-            <FiPlus />
-            {!isCollapsed && <span>New Chat</span>}
-          </button>
-          <div className="chat-list-container">
-            <ChatList 
-              chats={chatsToShow}
-              currentChatId={currentChatId}
-              loading={loading}
-              onChatSelect={handleChatSelect}
-              onChatEdit={handleChatEdit}
-              onChatDelete={handleChatDelete}
-              isCollapsed={isCollapsed}
-            />
-          </div>
+    <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+      <div className="sidebar-header">
+        {!isCollapsed && <h1 className="sidebar-title">Dio Chat</h1>}
+        <button className="toggle-btn" onClick={onToggle}>
+          {isCollapsed ? <FiChevronsRight /> : <FiChevronsLeft />}
+        </button>
+      </div>
+      <div className="sidebar-content">
+        <button 
+          className="new-chat-button" 
+          onClick={handleCreateNewChat} 
+          disabled={loading}
+        >
+          <FiPlus />
+          {!isCollapsed && <span>New Chat</span>}
+        </button>
+        <div className="chat-list-container">
+          <ChatList 
+            chats={chatsToShow}
+            currentChatId={currentChatId}
+            loading={loading}
+            onChatSelect={handleChatSelect}
+            onChatEdit={handleChatEdit}
+            onChatDelete={handleChatDelete}
+            isCollapsed={isCollapsed}
+          />
         </div>
       </div>
+      
+      {/* User Profile Section */}
+      <UserProfile isCollapsed={isCollapsed} />
+    </div>
   );
 };
