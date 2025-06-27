@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './InputArea.css';
-import { FaPaperPlane, FaSpinner, FaExpand, FaCompress } from 'react-icons/fa';
+import { FaPaperPlane, FaSpinner } from 'react-icons/fa';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 const InputArea = ({
@@ -12,7 +12,6 @@ const InputArea = ({
   loading,
   currentChat
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
   const formRef = useRef(null);
   const isComposing = useRef(false);
 
@@ -20,10 +19,9 @@ const InputArea = ({
   const adjustTextareaHeight = () => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
-      const maxHeight = isExpanded ? '50vh' : '200px';
       textareaRef.current.style.height = `${Math.min(
         textareaRef.current.scrollHeight,
-        isExpanded ? 500 : 200
+        200
       )}px`;
       textareaRef.current.style.overflowY = 
         textareaRef.current.scrollHeight > 200 ? 'auto' : 'hidden';
@@ -35,7 +33,7 @@ const InputArea = ({
       textareaRef.current.focus();
       adjustTextareaHeight();
     }
-  }, [loading, currentChat?.id, isExpanded]);
+  }, [loading, currentChat?.id]);
 
   // Adjust height when message changes
   useEffect(() => {
@@ -51,31 +49,21 @@ const InputArea = ({
     }
   }, { enableOnFormTags: true }, [messageInput]);
 
-  useHotkeys('/', (e) => {
-    if (document.activeElement?.tagName !== 'INPUT' && 
-        document.activeElement?.tagName !== 'TEXTAREA') {
+  useHotkeys('ctrl+k, cmd+k', (e) => {
+    if (document.activeElement?.tagName !== 'TEXTAREA') {
       e.preventDefault();
       textareaRef.current?.focus();
     }
-  }, { enableOnFormTags: false });
+  }, { enableOnFormTags: true });
 
   const handleComposition = (e) => {
     isComposing.current = e.type === 'compositionstart';
   };
 
-  const toggleExpand = (e) => {
-    e.preventDefault();
-    setIsExpanded(!isExpanded);
-    setTimeout(() => {
-      adjustTextareaHeight();
-      textareaRef.current?.focus();
-    }, 0);
-  };
-
   return (
     <form 
       ref={formRef}
-      className="input-container" 
+      className="input-form" 
       onSubmit={(e) => {
         e.preventDefault();
         if (!isComposing.current) {
@@ -84,44 +72,34 @@ const InputArea = ({
       }}
       autoComplete="off"
     >
-      <div className={`input-wrapper ${loading ? 'loading' : ''}`}>
-        <div className="input-content">
-          <textarea
-            ref={textareaRef}
-            value={messageInput}
-            onChange={(e) => setMessageInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onCompositionStart={handleComposition}
-            onCompositionEnd={handleComposition}
-            placeholder="Message..."
-            disabled={loading || !currentChat}
-            className="message-input"
-            rows="1"
-            autoComplete="off"
-            spellCheck="true"
-            aria-label="Message input"
-            style={{
-              resize: 'none',
-              maxHeight: isExpanded ? '50vh' : '200px',
-              overflowY: 'auto'
-            }}
-          />
-          <button
-            type="button"
-            onClick={toggleExpand}
-            className="expand-button"
-            aria-label={isExpanded ? 'Minimize' : 'Expand'}
-            disabled={loading || !currentChat}
-          >
-            {isExpanded ? <FaCompress /> : <FaExpand />}
-          </button>
-        </div>
+      <div className={`input-container ${loading ? 'loading' : ''}`}>
+        <textarea
+          ref={textareaRef}
+          value={messageInput}
+          onChange={(e) => setMessageInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onCompositionStart={handleComposition}
+          onCompositionEnd={handleComposition}
+          placeholder="Message..."
+          disabled={loading || !currentChat}
+          className="message-input"
+          rows="1"
+          autoComplete="off"
+          spellCheck="true"
+          aria-label="Message input"
+          style={{
+            overflowY: 'auto'
+          }}
+        />
         <button
           type="submit"
           disabled={loading || !messageInput.trim() || !currentChat}
           className="send-button"
           aria-label={loading ? 'Sending...' : 'Send message'}
           aria-busy={loading}
+          style={{
+            opacity: (loading || !messageInput.trim() || !currentChat) ? 0.6 : 1
+          }}
         >
           {loading ? (
             <FaSpinner className="spinner" />
@@ -132,7 +110,7 @@ const InputArea = ({
       </div>
       <div className="input-hints">
         <span className="hint">Shift + Enter for new line</span>
-        <span className="hint">Ctrl + Enter to send</span>
+        <span className="hint">Ctrl + K to focus input</span>
       </div>
     </form>
   );
