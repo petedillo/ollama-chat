@@ -1,72 +1,50 @@
 import { useEffect, useRef } from 'react';
 import './DeleteConfirmation.css';
-import { FaTrash, FaCheck, FaTimes } from 'react-icons/fa';
-export const DeleteConfirmation = ({ onConfirm, onCancel }) => {
-  const containerRef = useRef(null);
+import { FiAlertTriangle, FiCheck, FiX } from 'react-icons/fi';
 
-  // Handle click outside to cancel
+export const DeleteConfirmation = ({ onConfirm, onCancel }) => {
+  const modalRef = useRef(null);
+
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
-        onCancel(e);
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        onCancel();
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [onCancel]);
 
-  // Handle keyboard navigation
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        onCancel(e);
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onCancel();
       }
     };
-
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [onCancel]);
 
-  const handleConfirm = (e) => {
-    e?.stopPropagation();
-    onConfirm(e);
-  };
-
-  const handleCancel = (e) => {
-    e?.stopPropagation();
-    onCancel(e);
-  };
-
   return (
-    <div 
-      ref={containerRef}
-      className="delete-confirm-container"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="delete-confirm-content">
-        <FaTrash className="delete-icon" />
-        <span className="delete-confirm-text">Delete?</span>
-        <div className="delete-confirm-actions">
-          <button 
-            type="button"
-            className="cancel-button"
-            onClick={handleCancel}
-            aria-label="Cancel deletion"
-          >
-            <FaTimes size={14} />
+    <div className="delete-confirmation-overlay">
+      <div className="delete-confirmation-modal" ref={modalRef}>
+        <div className="delete-confirmation-header">
+          <FiAlertTriangle className="delete-warning-icon" />
+          <h3 className="delete-confirmation-title">Confirm Deletion</h3>
+        </div>
+        <p className="delete-confirmation-text">
+          Are you sure you want to permanently delete this chat?
+        </p>
+        <div className="delete-confirmation-actions">
+          <button onClick={onCancel} className="delete-action-btn cancel-btn">
+            <FiX /> No
           </button>
-          <button 
-            type="button"
-            className="confirm-button"
-            onClick={handleConfirm}
-            aria-label="Confirm deletion"
-          >
-            <FaCheck size={14} />
+          <button onClick={onConfirm} className="delete-action-btn confirm-btn">
+            <FiCheck /> Yes
           </button>
         </div>
       </div>

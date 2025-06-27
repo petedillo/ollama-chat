@@ -1,0 +1,18 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:rgba(28, 28, 40, 0.6)" />
+      <stop offset="100%" style="stop-color:rgba(10, 10, 20, 0.4)" />
+    </linearGradient>
+    <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+      <feMerge>
+        <feMergeNode in="coloredBlur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M12 8C7.58172 8 4 11.5817 4 16V40C4 44.4183 7.58172 48 12 48H24L32 56L40 48H52C56.4183 48 60 44.4183 60 40V16C60 11.5817 56.4183 8 52 8H12Z" fill="url(#glassGradient)" stroke="rgba(0, 255, 255, 0.6)" stroke-width="1.5" filter="url(#neonGlow)"/>
+  <path d="M16 24H48M16 34H36" stroke="rgba(0, 255, 255, 0.8)" stroke-width="3" stroke-linecap="round"/>
+</svg>
