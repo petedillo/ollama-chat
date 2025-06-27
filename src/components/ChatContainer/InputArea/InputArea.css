@@ -1,36 +1,47 @@
 .input-container {
-  padding: 1.25rem 1.5rem;
+  padding: 1.5rem 1.5rem 1.75rem;
   position: relative;
   width: 100%;
-  max-width: 800px;
+  max-width: 48rem;
   margin: 0 auto;
   box-sizing: border-box;
   flex-shrink: 0;
   z-index: 10;
   margin-top: auto;
-  background: rgba(10, 10, 20, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(0, 247, 255, 0.1);
-  padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
 .input-wrapper {
   display: flex;
-  align-items: center; /* Changed from stretch to center */
-  min-height: 56px; /* Ensure minimum height */
-  background: rgba(20, 25, 40, 0.7);
-  border-radius: 16px;
-  border: 1px solid rgba(0, 247, 255, 0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  align-items: flex-end;
+  min-height: 72px;
+  background: var(--color-bg-glass);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-light);
+  transition: all 0.3s ease;
   position: relative;
   max-width: 100%;
   margin: 0 auto;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  padding: 0.75rem 0.75rem 0.75rem 1.25rem;
+  box-sizing: border-box;
+  font-family: var(--font-primary);
+}
+
+.input-content {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  position: relative;
+  min-height: 100%;
+  background: transparent;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .input-wrapper.loading {
@@ -75,25 +86,72 @@
 
 .message-input {
   flex: 1;
-  padding: 0.75rem 1.25rem; /* Reduced top/bottom padding */
+  padding: 0.75rem 1rem 0.75rem 0.5rem;
   border: none;
-  border-radius: 0;
-  font-size: 0.95rem;
-  line-height: 1.4; /* Adjusted line height */
+  border-radius: var(--radius-xs);
+  font-size: 1rem;
+  line-height: 1.5;
   background: transparent;
-  color: #f0f0f0;
+  color: var(--color-text-primary);
   resize: none;
-  min-height: 24px;
+  min-height: 44px;
   max-height: 200px;
   overflow-y: auto;
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: var(--font-primary);
   outline: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   box-shadow: none;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 247, 255, 0.3) transparent;
-  align-self: center; /* Ensure proper alignment in flex container */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  box-sizing: border-box;
+  caret-color: var(--color-primary-main);
+}
+
+.message-input::placeholder {
+  color: var(--color-text-hint);
+  opacity: 0.7;
+}
+
+.message-input:focus {
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 0 0 2px rgba(0, 247, 255, 0.2);
+}
+
+/* Expand button */
+.expand-button {
+  background: none;
+  border: 1px solid var(--color-border-light);
+  color: var(--color-text-secondary);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  margin-left: 8px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  opacity: 0.8;
+  backdrop-filter: blur(4px);
+  background: rgba(10, 15, 30, 0.4);
+}
+
+.expand-button:hover {
+  background: var(--gradient-button-hover);
+  color: var(--color-primary-main);
+  border-color: var(--color-primary-main);
+  opacity: 1;
+  box-shadow: var(--shadow-button);
+}
+
+.expand-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: var(--color-border-main);
+  color: var(--color-text-disabled);
 }
 
 /* Custom scrollbar for WebKit browsers */
@@ -126,58 +184,47 @@
   opacity: 0.6;
 }
 
-/* Send Button - Centered and isolated styles */
+/* Send Button */
 .input-container .input-wrapper > .send-button,
 .input-container form > .input-wrapper > .send-button {
   --button-size: 44px;
   --icon-size: 20px;
   
-  /* Reset all inherited styles */
   all: unset;
-  
-  /* Base styles */
-  background: none;
-  border: none;
+  background: var(--color-bg-glass);
+  border: 1px solid var(--color-border-light);
   padding: 0;
-  margin: 0 8px 0 16px; /* Adjusted right margin */
-  font: inherit;
+  margin: 0 0 0 12px;
   cursor: pointer;
-  color: rgba(0, 247, 255, 0.8);
-  box-shadow: none;
-  text-shadow: none;
-  border-radius: 0;
-  text-transform: none;
-  letter-spacing: normal;
-  font-weight: normal;
-  line-height: 1;
-  
-  /* Layout */
+  color: var(--color-primary-main);
+  border-radius: 50%;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   width: var(--button-size);
   min-width: var(--button-size);
-  height: var(--button-size); /* Fixed height */
-  align-self: center; /* Ensure proper alignment in flex container */
-  padding: 0;
-  box-sizing: border-box;
-  
-  /* Visual */
-  opacity: 0.7;
-  transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  height: var(--button-size);
+  flex-shrink: 0;
+  opacity: 0.9;
+  align-self: flex-end;
+  margin-bottom: 4px;
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-button);
 }
 
-/* Button states - isolated from other buttons */
+/* Button states */
 .input-container .input-wrapper > .send-button:not(:disabled):hover,
 .input-container form > .input-wrapper > .send-button:not(:disabled):hover {
   opacity: 1;
-  color: #00f7ff;
+  background: rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
 }
 
 .input-container .input-wrapper > .send-button:active:not(:disabled),
 .input-container form > .input-wrapper > .send-button:active:not(:disabled) {
   transform: translateY(0);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .input-container .input-wrapper > .send-button:disabled,
@@ -217,13 +264,16 @@
 .input-hints {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
-  margin-top: 0.75rem;
-  font-size: 0.7rem;
-  color: rgba(180, 200, 220, 0.6);
+  gap: 1.25rem;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
   letter-spacing: 0.02em;
   font-weight: 400;
   transition: all 0.3s ease;
+  opacity: 0.9;
+  padding: 0 0.5rem;
+  font-family: var(--font-primary);
 }
 
 .input-container:focus-within .input-hints {
@@ -231,17 +281,21 @@
 }
 
 .hint {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
   position: relative;
-  padding: 0.2rem 0.5rem 0.2rem 1.25rem;
-  background: rgba(0, 247, 255, 0.05);
-  border-radius: 12px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(0, 247, 255, 0.08);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.5rem 1rem 0.5rem 1.75rem;
+  background: var(--color-bg-paper);
+  border-radius: var(--radius-sm);
+  transition: all 0.3s ease;
+  font-size: 0.8em;
+  line-height: 1.3;
+  border: 1px solid var(--color-border-main);
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-family: var(--font-primary);
+  text-transform: none;
+  letter-spacing: 0.02em;
 }
 
 .hint:hover {
@@ -250,24 +304,179 @@
   transform: translateY(-1px);
 }
 
-.hint:before {
+.hint::before {
   content: '';
-  display: inline-block;
+  position: absolute;
+  left: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(0, 247, 255, 0.6);
-  position: absolute;
-  left: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  box-shadow: 0 0 6px rgba(0, 247, 255, 0.4);
+  background: var(--color-primary-main);
+  box-shadow: var(--shadow-text-glow);
   transition: all 0.3s ease;
 }
 
-.hint:hover:before {
+.hint:hover::before {
   background: #00f7ff;
-  box-shadow: 0 0 10px rgba(0, 247, 255, 0.6);
+  box-shadow: 0 0 10px rgba(0, 247, 255, 0.8);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Focus states */
+.input-wrapper:focus-within {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Scrollbar styles */
+.message-input::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.message-input::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.message-input::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.message-input::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Loading state */
+.input-wrapper.loading {
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.input-wrapper.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  z-index: 1;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Disabled state */
+.input-wrapper:has(.message-input:disabled) {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Placeholder text */
+.message-input::placeholder {
+  color: rgba(200, 210, 220, 0.6);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Disabled input */
+.message-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Button disabled state */
+.input-container .input-wrapper > .send-button:disabled,
+.input-container form > .input-wrapper > .send-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Icons */
+.send-button .icon,
+.send-button .spinner {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+/* Loading spinner */
+.send-button .spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Hover effect for icon */
+.send-button:not(:disabled):hover .icon {
+  transform: translateX(1px);
 }
 
 /* Desktop-specific styles */
+@media (min-width: 1024px) {
+  .input-container {
+    padding: 1.5rem 2rem 2rem;
+    max-width: 56rem;
+    margin: 0 auto;
+  }
+  
+  .input-wrapper {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 0.875rem 1rem 0.875rem 1.5rem;
+    border-radius: var(--radius-md);
+  }
+  
+  .message-input {
+    padding: 0.875rem 1rem 0.875rem 0.75rem;
+    font-size: 1.05rem;
+    min-height: 48px;
+  }
+  
+  .input-content {
+    margin-right: 12px;
+  }
+  
+  .expand-button {
+    width: 40px;
+    height: 40px;
+    margin-left: 8px;
+  }
+  
+  .input-container .input-wrapper > .send-button,
+  .input-container form > .input-wrapper > .send-button {
+    --button-size: 48px;
+    --icon-size: 22px;
+    margin-bottom: 8px;
+    margin-left: 12px;
+  }
+  
+  .hint {
+    font-size: 0.85em;
+    padding: 0.6rem 1.25rem 0.6rem 2rem;
+  }
+  
+  .hint::before {
+    left: 1rem;
+  }
+}
