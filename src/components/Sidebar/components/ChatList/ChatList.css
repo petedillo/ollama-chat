@@ -26,18 +26,54 @@
   align-items: center;
   justify-content: center;
   padding: var(--spacing-lg);
-  color: var(--color-text-secondary);
+  color: var(--text-secondary);
   text-align: center;
-  font-size: 0.9em;
+  flex-grow: 1;
+  height: 100%;
 }
 
-.empty-state p:first-child {
-  margin-bottom: 4px;
-  font-weight: 500;
-  color: var(--color-text-primary);
+.empty-state-icon {
+  font-size: 2.5rem;
+  color: var(--icon-color);
+  margin-bottom: var(--spacing-md);
+  opacity: 0.5;
 }
 
-.empty-state p:last-child {
-  font-size: 0.85em;
-  opacity: 0.8;
+.empty-state .empty-state-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state .empty-state-text {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 200px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.chat-list.collapsed .loading-indicator,
+.chat-list.collapsed .empty-state {
+  padding: 0;
+  height: 40px;
+}
+
+.loading-indicator .loading-icon {
+  font-size: 1.5rem;
+  color: var(--icon-color);
+  opacity: 0.7;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.chat-list.collapsed .empty-state-icon {
+  margin-bottom: 0;
 }
