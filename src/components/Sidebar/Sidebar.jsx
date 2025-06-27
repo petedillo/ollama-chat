@@ -57,7 +57,7 @@ export const Sidebar = ({ isCollapsed, onToggle }) => {
   return (
       <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-header">
-          {!isCollapsed && <h1 className="sidebar-title">Ollama Chat</h1>}
+          {!isCollapsed && <h1 className="sidebar-title">Dio Chat</h1>}
           <button className="toggle-btn" onClick={onToggle}>
             {isCollapsed ? <FiChevronsRight /> : <FiChevronsLeft />}
           </button>
